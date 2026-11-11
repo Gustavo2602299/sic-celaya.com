@@ -1,0 +1,1224 @@
+<title>Sic Celaya — Soluciones de TI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="26 años de experiencia en soluciones de Tecnología Informática y Comunicaciones en Celaya, Guanajuato. Redes, videovigilancia, control de acceso, cómputo y mantenimiento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700;800&display=swap">
+
+<style>
+/* =====================================================
+   SIC CELAYA — sitio principal
+   Paleta: azul profundo + verde tecnología + neutros cálidos
+   Display: Sora (fuerte, moderna, sin serif)
+   Body: Inter (legible, datos, labels)
+   Layout: secciones de ancho completo con contenedor 1180px
+   ===================================================== */
+:root {
+  --bg:          #F7F8FC;
+  --surface:     #FFFFFF;
+  --surface-2:   #EEF0F8;
+  --border:      #DDE0EE;
+  --fg:          #181A2A;
+  --fg-2:        #474C6A;
+  --fg-3:        #8589A3;
+  --blue:        #1A3FC4;
+  --blue-dark:   #122D94;
+  --blue-light:  #EBF0FF;
+  --green:       #0D9E6E;
+  --green-light: #E6F7F2;
+  --orange:      #F97316;
+  --orange-light:#FEF0E6;
+  --shadow-sm:   0 1px 3px rgba(24,26,42,.07);
+  --shadow:      0 4px 16px rgba(24,26,42,.09);
+  --shadow-lg:   0 12px 40px rgba(24,26,42,.13);
+  --radius:      12px;
+  --radius-lg:   20px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:          #0F1120;
+    --surface:     #181B2E;
+    --surface-2:   #1F2340;
+    --border:      #2A2F50;
+    --fg:          #E8EAF6;
+    --fg-2:        #9298BF;
+    --fg-3:        #565C80;
+    --blue:        #4D72F5;
+    --blue-dark:   #3A5CE0;
+    --blue-light:  #151E45;
+    --green:       #10C484;
+    --green-light: #092B1E;
+    --orange:      #FB923C;
+    --orange-light:#2D1700;
+    --shadow-sm:   0 1px 3px rgba(0,0,0,.3);
+    --shadow:      0 4px 16px rgba(0,0,0,.25);
+    --shadow-lg:   0 12px 40px rgba(0,0,0,.4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:          #0F1120;
+  --surface:     #181B2E;
+  --surface-2:   #1F2340;
+  --border:      #2A2F50;
+  --fg:          #E8EAF6;
+  --fg-2:        #9298BF;
+  --fg-3:        #565C80;
+  --blue:        #4D72F5;
+  --blue-dark:   #3A5CE0;
+  --blue-light:  #151E45;
+  --green:       #10C484;
+  --green-light: #092B1E;
+  --orange:      #FB923C;
+  --orange-light:#2D1700;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,.3);
+  --shadow:      0 4px 16px rgba(0,0,0,.25);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,.4);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  background: var(--bg);
+  color: var(--fg);
+  padding-left: max(0px, env(safe-area-inset-left, 0px));
+  padding-right: max(0px, env(safe-area-inset-right, 0px));
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--surface);
+  z-index: 101;
+}
+
+img { max-width: 100%; display: block; }
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+
+/* ---- EYEBROW LABEL ---- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 14px;
+}
+.eyebrow::before {
+  content: "";
+  display: block;
+  width: 24px; height: 2px;
+  background: var(--blue);
+  border-radius: 2px;
+}
+
+/* ---- NAVIGATION ---- */
+.nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  height: 66px;
+  gap: 8px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+.nav-logo-mark {
+  width: 38px; height: 38px;
+  background: var(--blue);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: -.5px;
+}
+.nav-logo-text {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--fg);
+  line-height: 1.15;
+}
+.nav-logo-text small {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--fg-3);
+  letter-spacing: .04em;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+.nav-link {
+  padding: 7px 13px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--fg-2);
+  transition: background .12s, color .12s;
+  white-space: nowrap;
+}
+.nav-link:hover { background: var(--surface-2); color: var(--fg); }
+.nav-link.active { color: var(--blue); font-weight: 600; }
+.nav-cta {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 9px 20px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--blue-dark); }
+.nav-burger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--fg);
+  margin-left: auto;
+}
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 12px 24px 20px;
+  gap: 4px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-nav-link {
+  padding: 11px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg-2);
+}
+.mobile-nav-link:hover { background: var(--surface-2); color: var(--fg); }
+.mobile-cta {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 9px;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ---- HERO ---- */
+.hero {
+  background: var(--surface);
+  padding-block: 80px 72px;
+  overflow: hidden;
+  position: relative;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 80% 50%, var(--blue-light) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--green-light);
+  color: var(--green);
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin-bottom: 20px;
+}
+.hero-badge::before {
+  content: "";
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+}
+.hero-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--fg);
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+.hero-title .accent { color: var(--blue); }
+.hero-desc {
+  font-size: 16px;
+  color: var(--fg-2);
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 36px;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  padding: 13px 28px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 14.5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .15s, transform .15s;
+}
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.btn-outline {
+  padding: 13px 24px;
+  background: transparent;
+  color: var(--blue);
+  border: 2px solid var(--blue);
+  border-radius: 10px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .15s;
+}
+.btn-outline:hover { background: var(--blue-light); }
+
+/* Hero visual */
+.hero-visual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 14px;
+}
+.hero-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.hero-stat-card:first-child {
+  grid-column: 1 / -1;
+  background: var(--blue);
+  border-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.stat-number {
+  font-family: 'Sora', sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.hero-stat-card:first-child .stat-number { color: #fff; }
+.hero-stat-card:first-child .stat-label { color: rgba(255,255,255,.75); font-size: 14px; margin-top: 4px; }
+.stat-icon-wrap {
+  width: 56px; height: 56px;
+  background: rgba(255,255,255,.15);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 26px;
+}
+.mini-stat .stat-number { font-size: 28px; color: var(--fg); }
+.mini-stat .stat-label { font-size: 12px; color: var(--fg-3); margin-top: 3px; }
+.mini-stat .stat-icon-wrap {
+  background: var(--blue-light);
+  width: 44px; height: 44px;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* ---- STATS BAR ---- */
+.stats-bar {
+  background: var(--blue);
+  padding: 28px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-item {
+  text-align: center;
+  padding: 8px 16px;
+  border-right: 1px solid rgba(255,255,255,.15);
+}
+.stat-item:last-child { border-right: none; }
+.stat-item-number {
+  font-family: 'Sora', sans-serif;
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.stat-item-label {
+  font-size: 12.5px;
+  color: rgba(255,255,255,.7);
+  margin-top: 5px;
+  letter-spacing: .02em;
+}
+
+/* ---- SECCIONES GENERALES ---- */
+section { padding-block: 80px; }
+.section-header { margin-bottom: 48px; }
+.section-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  color: var(--fg);
+  text-wrap: balance;
+  margin-bottom: 14px;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--fg-2);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ---- SERVICIOS ---- */
+.services { background: var(--surface); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.service-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  background: var(--bg);
+  transition: box-shadow .18s, transform .18s, border-color .18s;
+  cursor: default;
+}
+.service-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  border-color: var(--blue);
+}
+.service-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 18px;
+}
+.service-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 10px;
+}
+.service-desc {
+  font-size: 14px;
+  color: var(--fg-2);
+  line-height: 1.65;
+}
+.service-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  text-decoration: none;
+}
+.service-link:hover { gap: 10px; }
+
+/* ---- POR QUÉ ELEGIRNOS ---- */
+.why { background: var(--bg); }
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+.why-features {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.why-feature {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.why-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.why-feature-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 5px;
+}
+.why-feature-desc { font-size: 13.5px; color: var(--fg-2); line-height: 1.6; }
+
+/* Why visual */
+.why-visual {
+  position: relative;
+}
+.why-visual-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+.why-visual-title {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--fg);
+  margin-bottom: 20px;
+}
+.coverage-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.coverage-item:last-child { border-bottom: none; }
+.coverage-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.coverage-name { font-size: 14px; font-weight: 500; color: var(--fg); flex: 1; }
+.coverage-tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-weight: 600;
+}
+.tag-green { background: var(--green-light); color: var(--green); }
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-orange { background: var(--orange-light); color: var(--orange); }
+.why-badge {
+  position: absolute;
+  bottom: -16px;
+  right: -16px;
+  background: var(--green);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-lg);
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.why-badge span { display: block; font-size: 22px; font-weight: 800; }
+
+/* ---- TESTIMONIOS ---- */
+.testimonials { background: var(--surface); }
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.testimonial-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.testimonial-stars {
+  color: #F59E0B;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+.testimonial-text {
+  font-size: 13.5px;
+  color: var(--fg-2);
+  line-height: 1.7;
+  flex: 1;
+  font-style: italic;
+}
+.testimonial-text::before { content: '"'; }
+.testimonial-text::after { content: '"'; }
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.author-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.author-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--fg);
+}
+.author-since { font-size: 11.5px; color: var(--fg-3); }
+
+/* ---- CTA BAND ---- */
+.cta-band {
+  background: var(--blue);
+  padding-block: 64px;
+  text-align: center;
+}
+.cta-band-title {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 14px;
+  text-wrap: balance;
+  letter-spacing: -.02em;
+}
+.cta-band-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,.75);
+  margin-bottom: 32px;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-band-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-white {
+  padding: 13px 28px;
+  background: #fff;
+  color: var(--blue);
+  border: none;
+  border-radius: 10px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 14.5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.btn-white:hover { opacity: .9; }
+.btn-white-outline {
+  padding: 13px 24px;
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,.45);
+  border-radius: 10px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .15s, background .15s;
+}
+.btn-white-outline:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+
+/* ---- FOOTER ---- */
+.footer {
+  background: var(--fg);
+  padding-block: 56px 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+.footer-brand-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.footer-brand-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,.5);
+  line-height: 1.65;
+  max-width: 280px;
+}
+.footer-heading {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  margin-bottom: 16px;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.footer-links a {
+  font-size: 13.5px;
+  color: rgba(255,255,255,.6);
+  text-decoration: none;
+  transition: color .12s;
+}
+.footer-links a:hover { color: #fff; }
+.footer-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 10px;
+}
+.footer-contact-row svg { flex-shrink: 0; opacity: .6; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.35); }
+.footer-legal {
+  display: flex;
+  gap: 20px;
+}
+.footer-legal a { font-size: 12px; color: rgba(255,255,255,.35); text-decoration: none; }
+.footer-legal a:hover { color: rgba(255,255,255,.65); }
+.schedule-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.7);
+}
+.schedule-badge strong { color: #fff; font-size: 13px; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { display: none; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .why-badge { display: none; }
+  .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid .stat-item:nth-child(2) { border-right: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-burger { display: flex; }
+}
+@media (max-width: 560px) {
+  section { padding-block: 56px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero { padding-block: 56px 48px; }
+}
+
+/* ---- ANIMATIONS ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .service-card, .testimonial-card { transition: box-shadow .18s, transform .18s, border-color .18s; }
+}
+</style>
+
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-mark">SC</div>
+      <div class="nav-logo-text">
+        Sic Celaya
+        <small>SA de CV</small>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link active" href="#inicio">Inicio</a>
+      <a class="nav-link" href="#servicios">Servicios</a>
+      <a class="nav-link" href="#redes">Redes</a>
+      <a class="nav-link" href="#videovigilancia">Videovigilancia</a>
+      <a class="nav-link" href="#control-acceso">Control de Acceso</a>
+      <a class="nav-link" href="catalogo.sic-celaya.com">Productos</a>
+    </div>
+    <a class="nav-cta" href="#contacto">Solicitar cotización</a>
+    <button class="nav-burger" onclick="toggleMenu()" aria-label="Menú">
+      <svg id="burgerIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a class="mobile-nav-link" href="#inicio" onclick="toggleMenu()">Inicio</a>
+    <a class="mobile-nav-link" href="#servicios" onclick="toggleMenu()">Servicios</a>
+    <a class="mobile-nav-link" href="#redes" onclick="toggleMenu()">Redes</a>
+    <a class="mobile-nav-link" href="#videovigilancia" onclick="toggleMenu()">Videovigilancia</a>
+    <a class="mobile-nav-link" href="#control-acceso" onclick="toggleMenu()">Control de Acceso</a>
+    <a class="mobile-nav-link" href="catalogo.sic-celaya.com" onclick="toggleMenu()">Productos</a>
+    <a class="mobile-cta" href="#contacto" onclick="toggleMenu()">Solicitar cotización</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="container hero-inner">
+    <div>
+      <div class="hero-badge">26 años en Celaya, Guanajuato</div>
+      <h1 class="hero-title">
+        Soluciones de <span class="accent">Tecnología Informática</span> para tu empresa
+      </h1>
+      <p class="hero-desc">
+        Desde redes y videovigilancia hasta equipos de cómputo y control de acceso — integramos la tecnología que tu negocio necesita con instalación profesional y soporte continuo.
+      </p>
+      <div class="hero-actions">
+        <a href="#servicios" class="btn-primary">
+          Ver servicios
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <a href="catalogo.sic-celaya.com" class="btn-outline">
+          Catálogo de productos
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-stat-card">
+        <div class="stat-icon-wrap">🏆</div>
+        <div>
+          <div class="stat-number">26</div>
+          <div class="stat-label">Años de experiencia en TI</div>
+        </div>
+      </div>
+      <div class="hero-stat-card mini-stat">
+        <div class="stat-icon-wrap">🤝</div>
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Clientes activos</div>
+      </div>
+      <div class="hero-stat-card mini-stat">
+        <div class="stat-icon-wrap">📍</div>
+        <div class="stat-number">3</div>
+        <div class="stat-label">Estados atendidos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-item-number">26+</div>
+        <div class="stat-item-label">Años de experiencia</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-number">500+</div>
+        <div class="stat-item-label">Clientes satisfechos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-number">3</div>
+        <div class="stat-item-label">Estados: Gto, Qro, Mich</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-number">24h</div>
+        <div class="stat-item-label">Tiempo de respuesta</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section class="services" id="servicios">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Lo que hacemos</div>
+      <h2 class="section-title">Servicios de TI integrales</h2>
+      <p class="section-sub">Desde la consultoría hasta la instalación y el mantenimiento — cubrimos todo el ciclo de vida de tu infraestructura tecnológica.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card" id="redes">
+        <div class="service-icon" style="background:var(--blue-light)">🔌</div>
+        <div class="service-title">Redes de datos</div>
+        <p class="service-desc">Diseño, instalación y configuración de redes cableadas e inalámbricas para oficinas, plantas y campus. Incluye switches, routers, access points y cableado estructurado.</p>
+        <a href="#contacto" class="service-link">Solicitar información →</a>
+      </div>
+      <div class="service-card" id="videovigilancia">
+        <div class="service-icon" style="background:var(--orange-light)">📷</div>
+        <div class="service-title">Videovigilancia</div>
+        <p class="service-desc">Sistemas de cámaras IP con grabación en la nube o local, visión nocturna, detección de personas/vehículos y acceso remoto desde cualquier dispositivo.</p>
+        <a href="#contacto" class="service-link">Solicitar información →</a>
+      </div>
+      <div class="service-card" id="control-acceso">
+        <div class="service-icon" style="background:var(--green-light)">🔐</div>
+        <div class="service-title">Control de acceso</div>
+        <p class="service-desc">Torniquetes, lectores biométricos, tarjetas y control vehicular con barreras. Integración con sistemas de asistencia y nómina.</p>
+        <a href="#contacto" class="service-link">Solicitar información →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:var(--blue-light)">🖥️</div>
+        <div class="service-title">Venta de equipo</div>
+        <p class="service-desc">Computadoras, laptops, impresoras, servidores, UPS y accesorios de las principales marcas: HP, Dell, Lenovo, Epcom, Hikvision y más. Con financiamiento disponible.</p>
+        <a href="catalogo.sic-celaya.com" class="service-link">Ver catálogo →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:var(--orange-light)">🔧</div>
+        <div class="service-title">Mantenimiento</div>
+        <p class="service-desc">Mantenimiento preventivo y correctivo para computadoras e impresoras. Planes de servicio para empresas con equipos de misión crítica.</p>
+        <a href="#contacto" class="service-link">Solicitar información →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon" style="background:var(--green-light)">💳</div>
+        <div class="service-title">Arrendamiento</div>
+        <p class="service-desc">Renta de equipos de cómputo y comunicaciones para proyectos temporales o para evitar la inversión inicial. Contratos flexibles de 12, 24 o 36 meses.</p>
+        <a href="#contacto" class="service-link">Solicitar información →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section class="why">
+  <div class="container">
+    <div class="why-grid">
+      <div>
+        <div class="eyebrow">Por qué elegirnos</div>
+        <h2 class="section-title">Un proveedor de confianza, no solo un vendedor</h2>
+        <p class="section-sub" style="margin-bottom:36px">Nuestros clientes llevan en promedio más de 9 años trabajando con nosotros — no porque no tengan opciones, sino porque encontraron un socio tecnológico de verdad.</p>
+        <div class="why-features">
+          <div class="why-feature">
+            <div class="why-icon" style="background:var(--blue-light)">⚡</div>
+            <div>
+              <div class="why-feature-title">Respuesta rápida</div>
+              <div class="why-feature-desc">Cotizaciones en el mismo día y tiempos de entrega definidos desde el primer contacto. Sin sorpresas.</div>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-icon" style="background:var(--green-light)">🎯</div>
+            <div>
+              <div class="why-feature-title">Soluciones a medida</div>
+              <div class="why-feature-desc">Cada empresa es diferente. Analizamos tu operación y recomendamos la tecnología correcta para tu presupuesto y necesidades.</div>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-icon" style="background:var(--orange-light)">🏗️</div>
+            <div>
+              <div class="why-feature-title">Instalación profesional</div>
+              <div class="why-feature-desc">Técnicos certificados con experiencia en entornos industriales, educativos y de servicios en Guanajuato.</div>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="why-icon" style="background:var(--blue-light)">📦</div>
+            <div>
+              <div class="why-feature-title">Portafolio amplio</div>
+              <div class="why-feature-desc">Más de 50 marcas disponibles. Hardware, software, consumibles y servicios en un solo proveedor.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual">
+        <div class="why-visual-card">
+          <div class="why-visual-title">📍 Zonas de cobertura</div>
+          <div class="coverage-item">
+            <div class="coverage-dot" style="background:var(--blue)"></div>
+            <div class="coverage-name">Celaya, Guanajuato</div>
+            <span class="coverage-tag tag-blue">Sede principal</span>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-dot" style="background:var(--green)"></div>
+            <div class="coverage-name">Querétaro</div>
+            <span class="coverage-tag tag-green">Cobertura activa</span>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-dot" style="background:var(--green)"></div>
+            <div class="coverage-name">Michoacán</div>
+            <span class="coverage-tag tag-green">Cobertura activa</span>
+          </div>
+          <div class="coverage-item">
+            <div class="coverage-dot" style="background:var(--orange)"></div>
+            <div class="coverage-name">Bajío en general</div>
+            <span class="coverage-tag tag-orange">Bajo solicitud</span>
+          </div>
+        </div>
+        <div class="why-badge">
+          <span>9+</span>
+          Años promedio de relación con clientes
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Clientes</div>
+      <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">SIC Celaya siempre apoyando cuando se necesita, es un proveedor sólido que cuando se requiere algo de ellos siempre tiene una respuesta rápida, ya sea en entrega de equipos, consumibles, tecnología y más. Tengo 9 años trabajando con ellos y cada año mejoran su servicio y portafolio de soluciones.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">CA</div>
+          <div>
+            <div class="author-name">Cuauhtémoc A. Arredondo Darán</div>
+            <div class="author-since">Cliente desde hace 9+ años</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">Tenemos más de 10 años trabajando con Sic Celaya. Es una relación de confianza y buena comunicación. Siempre se preocupan por ofrecer mejores productos y servicios y atender nuestros requerimientos lo más rápido posible.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">SM</div>
+          <div>
+            <div class="author-name">Salvador Miranda Pescador</div>
+            <div class="author-since">Cliente desde hace 10+ años</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">Sic Celaya se ha convertido en una pieza clave en el crecimiento de nuestra empresa, nos han ayudado con suministros de calidad y vanguardia. Tienen la capacidad técnica y estratégica para entender y asesorar sobre las necesidades de nuestra operación.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">JB</div>
+          <div>
+            <div class="author-name">José Tomás Bravo Durán</div>
+            <div class="author-since">Cliente empresarial</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">Desde hace varios años hemos tenido a Sic Celaya como un proveedor confiable en los productos de tecnología que ocupamos, siempre hemos recibido un trato profesional y excelente servicio, sin duda son nuestra elección para cubrir nuestros requerimientos.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">AF</div>
+          <div>
+            <div class="author-name">Alejandro L. Ferreyra</div>
+            <div class="author-since">Cliente recurrente</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">SIC Celaya es un proveedor altamente recomendable, ya que se distingue por brindar una atención rápida y eficiente ante una solicitud. Su tiempo de respuesta es oportuno, lo que facilita la solución de nuestras necesidades. Además, cuentan con precios competitivos y buena relación costo-calidad.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">EZ</div>
+          <div>
+            <div class="author-name">Emmanuel Zamora Hernández</div>
+            <div class="author-since">Cliente satisfecho</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card" style="background:var(--blue-light);border-color:var(--blue)">
+        <div style="font-size:32px;margin-bottom:8px">💬</div>
+        <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:17px;color:var(--fg);margin-bottom:10px">¿Listo para ser el próximo caso de éxito?</div>
+        <p style="font-size:13.5px;color:var(--fg-2);line-height:1.6;margin-bottom:20px">Cuéntanos qué necesita tu empresa y te preparamos una propuesta sin compromiso.</p>
+        <a href="#contacto" class="btn-primary" style="display:inline-flex">Solicitar cotización →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band" id="contacto">
+  <div class="container">
+    <div class="cta-band-title">¿Buscas equipos o tienes un proyecto de TI?</div>
+    <p class="cta-band-sub">Llámanos o escríbenos — respondemos el mismo día hábil con opciones reales y precios competitivos.</p>
+    <div class="cta-band-actions">
+      <a href="tel:4613773477" class="btn-white">📞 (461) 377-3477</a>
+      <a href="mailto:ale@siccelaya.com.mx" class="btn-white-outline">✉️ ale@siccelaya.com.mx</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Sic Celaya SA de CV</div>
+        <p class="footer-brand-desc">26 años integrando soluciones de Tecnologías de la Información y Comunicaciones para empresas del Bajío. La tecnología no tiene por qué ser complicada.</p>
+        <div class="schedule-badge">
+          🕐 <div><strong>Lun–Vie:</strong> 9:00–18:00 · <strong>Sáb:</strong> 9:00–14:00</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Servicios</div>
+        <ul class="footer-links">
+          <li><a href="#redes">Redes de datos</a></li>
+          <li><a href="#videovigilancia">Videovigilancia</a></li>
+          <li><a href="#control-acceso">Control de acceso</a></li>
+          <li><a href="#servicios">Mantenimiento</a></li>
+          <li><a href="#servicios">Arrendamiento</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Productos</div>
+        <ul class="footer-links">
+          <li><a href="catalogo.sic-celaya.com">Catálogo completo</a></li>
+          <li><a href="catalogo.sic-celaya.com">UPS y energía</a></li>
+          <li><a href="catalogo.sic-celaya.com">Redes y switches</a></li>
+          <li><a href="catalogo.sic-celaya.com">Cómputo</a></li>
+          <li><a href="catalogo.sic-celaya.com">Cámaras IP</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Contacto</div>
+        <div class="footer-contact-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.52 3.18 2 2 0 0 1 3.48 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.9-1.12a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92"/></svg>
+          (461) 377-3477
+        </div>
+        <div class="footer-contact-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.52 3.18 2 2 0 0 1 3.48 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.9-1.12a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92"/></svg>
+          (461) 614-3343 ext. 1
+        </div>
+        <div class="footer-contact-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          ale@siccelaya.com.mx
+        </div>
+        <div class="footer-contact-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Celaya, Guanajuato
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Sic Celaya SA de CV · Todos los derechos reservados</span>
+      <div class="footer-legal">
+        <a href="#">Aviso de privacidad</a>
+        <a href="#">Términos de uso</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+
+// Cerrar menu al hacer scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('mobileMenu').classList.remove('open');
+});
+
+// Highlight nav link activo al hacer scroll
+const sections = document.querySelectorAll('section[id], div[id="contacto"]');
+const navLinks = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + entry.target.id) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
