@@ -7,49 +7,47 @@
 <style>
 /* =====================================================
    SIC CELAYA — sitio principal
-   Paleta: azul profundo + verde tecnología + neutros cálidos
-   Display: Sora (fuerte, moderna, sin serif)
-   Body: Inter (legible, datos, labels)
-   Layout: secciones de ancho completo con contenedor 1180px
+   Paleta: verde corporativo #1B5E42 + naranja #F97316 (del logo)
+   Display: Sora  |  Body: Inter
    ===================================================== */
 :root {
-  --bg:          #F7F8FC;
+  --bg:          #F5F7F5;
   --surface:     #FFFFFF;
-  --surface-2:   #EEF0F8;
-  --border:      #DDE0EE;
-  --fg:          #181A2A;
-  --fg-2:        #474C6A;
-  --fg-3:        #8589A3;
-  --blue:        #1A3FC4;
-  --blue-dark:   #122D94;
-  --blue-light:  #EBF0FF;
-  --green:       #0D9E6E;
-  --green-light: #E6F7F2;
+  --surface-2:   #EBF2ED;
+  --border:      #D3E0D7;
+  --fg:          #0F1A13;
+  --fg-2:        #3A4F3F;
+  --fg-3:        #7A9080;
+  --blue:        #1B5E42;
+  --blue-dark:   #124030;
+  --blue-light:  #E4F0EB;
+  --green:       #1B5E42;
+  --green-light: #E4F0EB;
   --orange:      #F97316;
   --orange-light:#FEF0E6;
-  --shadow-sm:   0 1px 3px rgba(24,26,42,.07);
-  --shadow:      0 4px 16px rgba(24,26,42,.09);
-  --shadow-lg:   0 12px 40px rgba(24,26,42,.13);
+  --shadow-sm:   0 1px 3px rgba(15,26,19,.07);
+  --shadow:      0 4px 16px rgba(15,26,19,.09);
+  --shadow-lg:   0 12px 40px rgba(15,26,19,.13);
   --radius:      12px;
   --radius-lg:   20px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg:          #0F1120;
-    --surface:     #181B2E;
-    --surface-2:   #1F2340;
-    --border:      #2A2F50;
-    --fg:          #E8EAF6;
-    --fg-2:        #9298BF;
-    --fg-3:        #565C80;
-    --blue:        #4D72F5;
-    --blue-dark:   #3A5CE0;
-    --blue-light:  #151E45;
-    --green:       #10C484;
-    --green-light: #092B1E;
+    --bg:          #0A120D;
+    --surface:     #111A14;
+    --surface-2:   #182210;
+    --border:      #243020;
+    --fg:          #E2EDE5;
+    --fg-2:        #8AA890;
+    --fg-3:        #4D6652;
+    --blue:        #3DB87A;
+    --blue-dark:   #2DA068;
+    --blue-light:  #0D2718;
+    --green:       #3DB87A;
+    --green-light: #0D2718;
     --orange:      #FB923C;
-    --orange-light:#2D1700;
+    --orange-light:#2D1500;
     --shadow-sm:   0 1px 3px rgba(0,0,0,.3);
     --shadow:      0 4px 16px rgba(0,0,0,.25);
     --shadow-lg:   0 12px 40px rgba(0,0,0,.4);
@@ -57,20 +55,20 @@
   }
 }
 :root[data-theme="dark"] {
-  --bg:          #0F1120;
-  --surface:     #181B2E;
-  --surface-2:   #1F2340;
-  --border:      #2A2F50;
-  --fg:          #E8EAF6;
-  --fg-2:        #9298BF;
-  --fg-3:        #565C80;
-  --blue:        #4D72F5;
-  --blue-dark:   #3A5CE0;
-  --blue-light:  #151E45;
-  --green:       #10C484;
-  --green-light: #092B1E;
+  --bg:          #0A120D;
+  --surface:     #111A14;
+  --surface-2:   #182210;
+  --border:      #243020;
+  --fg:          #E2EDE5;
+  --fg-2:        #8AA890;
+  --fg-3:        #4D6652;
+  --blue:        #3DB87A;
+  --blue-dark:   #2DA068;
+  --blue-light:  #0D2718;
+  --green:       #3DB87A;
+  --green-light: #0D2718;
   --orange:      #FB923C;
-  --orange-light:#2D1700;
+  --orange-light:#2D1500;
   --shadow-sm:   0 1px 3px rgba(0,0,0,.3);
   --shadow:      0 4px 16px rgba(0,0,0,.25);
   --shadow-lg:   0 12px 40px rgba(0,0,0,.4);
@@ -152,30 +150,9 @@ img { max-width: 100%; display: block; }
   flex-shrink: 0;
   margin-right: 16px;
 }
-.nav-logo-mark {
-  width: 38px; height: 38px;
-  background: var(--blue);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Sora', sans-serif;
-  font-weight: 800;
-  font-size: 16px;
-  color: #fff;
-  letter-spacing: -.5px;
-}
-.nav-logo-text {
-  font-family: 'Sora', sans-serif;
-  font-weight: 700;
-  font-size: 17px;
-  color: var(--fg);
-  line-height: 1.15;
-}
-.nav-logo-text small {
-  display: block;
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--fg-3);
-  letter-spacing: .04em;
+.nav-logo-img {
+  height: 40px;
+  width: auto;
 }
 .nav-links {
   display: flex;
@@ -712,8 +689,15 @@ section { padding-block: 80px; }
 
 /* ---- FOOTER ---- */
 .footer {
-  background: var(--fg);
+  background: #0D3324;
   padding-block: 56px 32px;
+}
+.footer-logo {
+  height: 44px;
+  width: auto;
+  margin-bottom: 14px;
+  /* logo oscuro sobre fondo verde — aplicamos filtro para versión clara */
+  filter: brightness(0) invert(1);
 }
 .footer-grid {
   display: grid;
@@ -828,11 +812,7 @@ section { padding-block: 80px; }
 <nav class="nav">
   <div class="container nav-inner">
     <a class="nav-logo" href="#">
-      <div class="nav-logo-mark">SC</div>
-      <div class="nav-logo-text">
-        Sic Celaya
-        <small>SA de CV</small>
-      </div>
+      <img class="nav-logo-img" src="logo.png" alt="Sic Celaya SA de CV">
     </a>
     <div class="nav-links">
       <a class="nav-link active" href="#inicio">Inicio</a>
@@ -1138,7 +1118,7 @@ section { padding-block: 80px; }
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand-name">Sic Celaya SA de CV</div>
+        <img class="footer-logo" src="logo.png" alt="Sic Celaya SA de CV">
         <p class="footer-brand-desc">26 años integrando soluciones de Tecnologías de la Información y Comunicaciones para empresas del Bajío. La tecnología no tiene por qué ser complicada.</p>
         <div class="schedule-badge">
           🕐 <div><strong>Lun–Vie:</strong> 9:00–18:00 · <strong>Sáb:</strong> 9:00–14:00</div>
