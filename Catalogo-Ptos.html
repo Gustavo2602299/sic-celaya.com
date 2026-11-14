@@ -207,7 +207,7 @@ function render(){
     return '<div class="product-card" onclick="openModal('+gi+')">'
       +'<div class="card-img-wrap">'
       +(p[P.IM]?'<img class="card-img" src="'+p[P.IM]+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">':'')
-      +'<div class="card-no-img" style="'+(p[P.IM]?'display:none':'')+'">📦</div>'
+      +'<div class="card-no-img" style="'+(p[P.IM]?'display:none':'')+'">&#128230;</div>'
       +'</div><div class="card-body">'
       +'<div class="card-brand">'
       +(p[P.ML]?'<img class="card-brand-logo" src="'+p[P.ML]+'" alt="" onerror="this.style.display=\'none\'">':'')
@@ -215,7 +215,7 @@ function render(){
       +'<div class="card-title">'+p[P.N]+'</div>'
       +(p[P.SKU]?'<div class="card-sku">'+p[P.SKU]+'</div>':'')
       +'<div class="card-price">'+fmt(p[P.PR])+'<span class="card-price-label">Sin IVA</span></div>'
-      +'<div class="card-stock">✓ En existencia</div>'
+      +'<div class="card-stock">&#10003; En existencia</div>'
       +'<button class="card-cta">Ver detalle →</button>'
       +'</div></div>';
   }).join('');
@@ -253,8 +253,8 @@ function openModal(gi){
   const wa='https://wa.me/524613773477?text='+encodeURIComponent('Hola, me interesa cotizar:\n'+p[P.N]+(p[P.SKU]?' ('+p[P.SKU]+')':''));
   document.getElementById('modalBody').innerHTML=
     '<div>'
-    +(p[P.IM]?'<img class="modal-img" src="'+p[P.IM]+'" alt="" onerror="this.style.padding='40px'">':
-      '<div class="modal-img" style="display:flex;align-items:center;justify-content:center;font-size:64px">📦</div>')
+    +(p[P.IM]?'<img class="modal-img" src="'+p[P.IM]+'" alt="" onerror="this.style.padding=\'40px\'">':
+      '<div class="modal-img" style="display:flex;align-items:center;justify-content:center;font-size:48px;background:var(--surface-2)">&#128230;</div>')
     +'</div><div>'
     +'<div class="modal-brand">'+p[P.M]+'</div>'
     +'<div class="modal-title">'+p[P.N]+'</div>'
