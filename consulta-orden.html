@@ -217,10 +217,13 @@
 <main>
   <div class="search-card">
     <h2>Consulta tu orden</h2>
-    <p>Ingresa tu número de orden para ver el estado y el historial de tu equipo.</p>
-    <div class="input-row">
-      <input type="text" id="orderInput" placeholder="Ej: ORD-2024-001" autocomplete="off" spellcheck="false">
-      <button class="btn-buscar" id="btnBuscar" onclick="buscar()">Buscar</button>
+    <p>Ingresa tu número de orden y el código de acceso que aparece en tu comprobante.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <input type="text" id="orderInput" placeholder="Número de orden  (Ej: 1001)" autocomplete="off" spellcheck="false" style="padding:12px 16px;border:2px solid var(--border);border-radius:10px;font-size:15px;font-family:inherit;background:var(--bg);color:var(--fg);transition:border-color .2s;text-transform:uppercase;letter-spacing:.04em" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      <div class="input-row">
+        <input type="text" id="trackingInput" placeholder="Código de acceso  (Ej: A3K9-7P2M)" autocomplete="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:.06em">
+        <button class="btn-buscar" id="btnBuscar" onclick="buscar()">Buscar</button>
+      </div>
     </div>
   </div>
 
@@ -235,6 +238,13 @@
     <div class="state-icon">🔍</div>
     <h3>Orden no encontrada</h3>
     <p>No encontramos una orden con ese número. Verifica e intenta de nuevo.</p>
+  </div>
+
+  <!-- Wrong code -->
+  <div class="state" id="stateWrongCode">
+    <div class="state-icon">🔒</div>
+    <h3>Código incorrecto</h3>
+    <p>El código de acceso no coincide con esta orden. Revisa tu comprobante e intenta de nuevo.</p>
   </div>
 
   <!-- Error -->
@@ -302,7 +312,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app, "ai-studio-f162bc7a-9cbe-46ab-9be9-322ab9609d89");
 
 function setState(id) {
-  ['stateLoading','stateNotFound','stateError'].forEach(s => {
+  ['stateLoading','stateNotFound','stateError','stateWrongCode'].forEach(s => {
     document.getElementById(s).classList.remove('show');
   });
   document.getElementById('resultCard').classList.remove('show');
@@ -354,32 +364,30 @@ function fmt(ts) {
 
 async function buscar() {
   const rawInput = document.getElementById('orderInput').value.trim();
-  if (!rawInput) return;
+  const rawCode = document.getElementById('trackingInput').value.trim();
+  if (!rawInput || !rawCode) return;
   const orderId = rawInput.toUpperCase();
+  const enteredCode = rawCode.toUpperCase().replace(/\s/g, '');
 
   setState('stateLoading');
   document.getElementById('btnBuscar').disabled = true;
 
   try {
-    // Try querying by id field first, then by document ID
     const ticketsRef = collection(db, 'tickets');
-
-    // Try multiple query strategies
-    let snap = null;
     let ticketData = null;
 
     // Strategy 1: query where id field matches
     try {
       const q1 = query(ticketsRef, where('id', '==', orderId), limit(1));
-      snap = await getDocs(q1);
+      const snap = await getDocs(q1);
       if (!snap.empty) ticketData = snap.docs[0].data();
     } catch(e) { /* try next */ }
 
-    // Strategy 2: query where id field matches lowercase
+    // Strategy 2: id as-is (case preserved)
     if (!ticketData) {
       try {
         const q2 = query(ticketsRef, where('id', '==', rawInput), limit(1));
-        snap = await getDocs(q2);
+        const snap = await getDocs(q2);
         if (!snap.empty) ticketData = snap.docs[0].data();
       } catch(e) { /* try next */ }
     }
@@ -395,6 +403,13 @@ async function buscar() {
 
     if (!ticketData) {
       setState('stateNotFound');
+      return;
+    }
+
+    // Validate trackingCode
+    const storedCode = (ticketData.trackingCode || '').toUpperCase().replace(/\s/g, '');
+    if (!storedCode || storedCode !== enteredCode) {
+      setState('stateWrongCode');
       return;
     }
 
@@ -493,6 +508,9 @@ window.buscar = buscar;
 
 // Enter key support
 document.getElementById('orderInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('trackingInput').focus();
+});
+document.getElementById('trackingInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') buscar();
 });
 </script>
