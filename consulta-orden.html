@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulta de Orden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --fg: #1a1f2e;
+    --fg2: #5a6578;
+    --accent: #e85d04;
+    --accent2: #f48c06;
+    --border: #e2e8f0;
+    --shadow: 0 4px 24px rgba(0,0,0,.08);
+    --radius: 14px;
+    --green: #16a34a;
+    --blue: #2563eb;
+    --amber: #d97706;
+    --red: #dc2626;
+    --purple: #7c3aed;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1117; --card: #1a1f2e; --fg: #f1f5f9; --fg2: #94a3b8;
+      --border: #2d3748; --shadow: 0 4px 24px rgba(0,0,0,.3);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1117; --card: #1a1f2e; --fg: #f1f5f9; --fg2: #94a3b8;
+    --border: #2d3748; --shadow: 0 4px 24px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg); color: var(--fg);
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 16px max(20px, env(safe-area-inset-left, 0px));
+    display: flex; align-items: center; gap: 14px;
+  }
+  .logo-wrap { width: 44px; height: 44px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
+  .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+  .logo-fallback {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 18px; flex-shrink: 0;
+  }
+  .header-text h1 { font-size: 16px; font-weight: 700; line-height: 1.2; }
+  .header-text p { font-size: 12px; color: var(--fg2); margin-top: 2px; }
+
+  /* ── Main ── */
+  main {
+    flex: 1;
+    padding: 32px max(20px, env(safe-area-inset-left, 0px));
+    max-width: 640px; width: 100%; margin: 0 auto;
+  }
+
+  .search-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 28px;
+    margin-bottom: 24px;
+  }
+  .search-card h2 {
+    font-size: 20px; font-weight: 700; margin-bottom: 6px;
+  }
+  .search-card p { font-size: 14px; color: var(--fg2); margin-bottom: 24px; }
+
+  .input-row { display: flex; gap: 10px; }
+  .input-row input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px; font-family: inherit;
+    background: var(--bg); color: var(--fg);
+    transition: border-color .2s;
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+  .input-row input:focus { outline: none; border-color: var(--accent); }
+  .input-row input::placeholder { text-transform: none; letter-spacing: 0; color: var(--fg2); }
+  .btn-buscar {
+    padding: 12px 22px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 600; font-family: inherit;
+    cursor: pointer; white-space: nowrap;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn-buscar:hover { opacity: .9; }
+  .btn-buscar:active { transform: scale(.97); }
+  .btn-buscar:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* ── States ── */
+  .state { text-align: center; padding: 32px 16px; display: none; }
+  .state.show { display: block; }
+  .state-icon { font-size: 48px; margin-bottom: 12px; }
+  .state h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .state p { font-size: 14px; color: var(--fg2); }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin .7s linear infinite; margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Result Card ── */
+  .result-card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden; display: none;
+  }
+  .result-card.show { display: block; }
+
+  .result-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap;
+  }
+  .order-id { font-size: 13px; color: var(--fg2); margin-bottom: 4px; }
+  .order-id strong { color: var(--fg); font-weight: 700; font-size: 15px; }
+  .device-name { font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .device-brand { font-size: 13px; color: var(--fg2); margin-top: 2px; }
+
+  .status-badge {
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .status-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  .s-recibido { background: #dbeafe; color: #1d4ed8; }
+  .s-diagnostico { background: #fef3c7; color: #92400e; }
+  .s-reparacion { background: #ede9fe; color: #5b21b6; }
+  .s-listo { background: #d1fae5; color: #065f46; }
+  .s-entregado { background: #dcfce7; color: #15803d; }
+  .s-cancelado { background: #fee2e2; color: #991b1b; }
+  .s-pendiente { background: #f3f4f6; color: #374151; }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .s-recibido { background: #1e3a5f; color: #93c5fd; }
+    :root:not([data-theme="light"]) .s-diagnostico { background: #451a03; color: #fcd34d; }
+    :root:not([data-theme="light"]) .s-reparacion { background: #2e1065; color: #c4b5fd; }
+    :root:not([data-theme="light"]) .s-listo { background: #064e3b; color: #6ee7b7; }
+    :root:not([data-theme="light"]) .s-entregado { background: #052e16; color: #86efac; }
+    :root:not([data-theme="light"]) .s-cancelado { background: #450a0a; color: #fca5a5; }
+    :root:not([data-theme="light"]) .s-pendiente { background: #1f2937; color: #9ca3af; }
+  }
+  :root[data-theme="dark"] .s-recibido { background: #1e3a5f; color: #93c5fd; }
+  :root[data-theme="dark"] .s-diagnostico { background: #451a03; color: #fcd34d; }
+  :root[data-theme="dark"] .s-reparacion { background: #2e1065; color: #c4b5fd; }
+  :root[data-theme="dark"] .s-listo { background: #064e3b; color: #6ee7b7; }
+  :root[data-theme="dark"] .s-entregado { background: #052e16; color: #86efac; }
+  :root[data-theme="dark"] .s-cancelado { background: #450a0a; color: #fca5a5; }
+  :root[data-theme="dark"] .s-pendiente { background: #1f2937; color: #9ca3af; }
+
+  /* ── Info Grid ── */
+  .info-grid {
+    padding: 20px 24px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 480px) { .info-grid { grid-template-columns: 1fr; gap: 12px; } }
+  .info-item label { font-size: 11px; font-weight: 600; color: var(--fg2); text-transform: uppercase; letter-spacing: .06em; display: block; margin-bottom: 3px; }
+  .info-item span { font-size: 14px; font-weight: 500; }
+
+  /* ── Timeline ── */
+  .timeline-section { padding: 20px 24px; }
+  .timeline-section h3 { font-size: 14px; font-weight: 700; color: var(--fg2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 16px; }
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 20px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: -24px; top: 4px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--card);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .tl-dot.old { background: var(--border); box-shadow: 0 0 0 2px var(--border); }
+  .tl-action { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .tl-meta { font-size: 12px; color: var(--fg2); }
+  .tl-notes { font-size: 13px; color: var(--fg2); margin-top: 4px; padding: 8px 10px; background: var(--bg); border-radius: 7px; border-left: 2px solid var(--accent); }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center; padding: 20px;
+    font-size: 12px; color: var(--fg2);
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-fallback">SC</div>
+  <div class="header-text">
+    <h1>Sic Celaya SA de CV</h1>
+    <p>Consulta de órdenes de servicio</p>
+  </div>
+</header>
+
+<main>
+  <div class="search-card">
+    <h2>Consulta tu orden</h2>
+    <p>Ingresa tu número de orden para ver el estado y el historial de tu equipo.</p>
+    <div class="input-row">
+      <input type="text" id="orderInput" placeholder="Ej: ORD-2024-001" autocomplete="off" spellcheck="false">
+      <button class="btn-buscar" id="btnBuscar" onclick="buscar()">Buscar</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="state" id="stateLoading">
+    <div class="spinner"></div>
+    <p>Buscando tu orden…</p>
+  </div>
+
+  <!-- Not found -->
+  <div class="state" id="stateNotFound">
+    <div class="state-icon">🔍</div>
+    <h3>Orden no encontrada</h3>
+    <p>No encontramos una orden con ese número. Verifica e intenta de nuevo.</p>
+  </div>
+
+  <!-- Error -->
+  <div class="state" id="stateError">
+    <div class="state-icon">⚠️</div>
+    <h3>Error de conexión</h3>
+    <p>No pudimos consultar la información. Intenta más tarde.</p>
+  </div>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div>
+        <div class="order-id">Orden # <strong id="resOrderId">—</strong></div>
+        <div class="device-name" id="resDevice">—</div>
+        <div class="device-brand" id="resBrand">—</div>
+      </div>
+      <span class="status-badge" id="resStatus">—</span>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <label>Fecha de recepción</label>
+        <span id="resFechaRec">—</span>
+      </div>
+      <div class="info-item">
+        <label>Técnico asignado</label>
+        <span id="resTecnico">—</span>
+      </div>
+      <div class="info-item" id="rowFechaEnt" style="display:none">
+        <label>Fecha estimada de entrega</label>
+        <span id="resFechaEnt">—</span>
+      </div>
+      <div class="info-item" style="grid-column: 1 / -1">
+        <label>Problema reportado</label>
+        <span id="resProblema">—</span>
+      </div>
+    </div>
+
+    <div class="timeline-section" id="timelineSection" style="display:none">
+      <h3>Historial y Bitácora</h3>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </div>
+</main>
+
+<footer>Sic Celaya SA de CV · Cel. (461) 123-4567 · sisec-43795775866.us-west1.run.app</footer>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/app/+esm';
+import { getFirestore, collection, query, where, getDocs, limit, doc, getDoc } from 'https://cdn.jsdelivr.net/npm/firebase@10.12.2/firestore/+esm';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAsprAgoOOn3MdMihWD__KModBbFMBzc7A",
+  authDomain: "sic-celaya.firebaseapp.com",
+  projectId: "sic-celaya",
+  storageBucket: "sic-celaya.firebasestorage.app",
+  messagingSenderId: "43795775866",
+  appId: "1:43795775866:web:628576fc88535bd59996c3",
+  databaseId: "ai-studio-f162bc7a-9cbe-46ab-9be9-322ab9609d89"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app, "ai-studio-f162bc7a-9cbe-46ab-9be9-322ab9609d89");
+
+function setState(id) {
+  ['stateLoading','stateNotFound','stateError'].forEach(s => {
+    document.getElementById(s).classList.remove('show');
+  });
+  document.getElementById('resultCard').classList.remove('show');
+  if (id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('show');
+  }
+}
+
+function statusClass(s) {
+  if (!s) return 's-pendiente';
+  const sl = s.toLowerCase();
+  if (sl.includes('recibido') || sl === 'recibido') return 's-recibido';
+  if (sl.includes('diagnos') || sl.includes('en_diagn')) return 's-diagnostico';
+  if (sl.includes('reparaci') || sl.includes('en_repara')) return 's-reparacion';
+  if (sl.includes('listo') || sl.includes('lista')) return 's-listo';
+  if (sl.includes('entregado') || sl === 'entregado') return 's-entregado';
+  if (sl.includes('cancelado') || sl === 'cancelado') return 's-cancelado';
+  return 's-pendiente';
+}
+
+function statusLabel(s) {
+  if (!s) return 'Pendiente';
+  // Convert enum-style to readable
+  const map = {
+    'EN_DIAGNOSTICO': 'En Diagnóstico',
+    'EN_REPARACION': 'En Reparación',
+    'RECIBIDO': 'Recibido',
+    'ENTREGADO': 'Entregado',
+    'CANCELADO': 'Cancelado',
+    'LISTO': 'Listo para entrega',
+    'PENDIENTE': 'Pendiente',
+  };
+  return map[s.toUpperCase()] || s;
+}
+
+function fmt(ts) {
+  if (!ts) return '—';
+  let d;
+  if (ts && ts.seconds) d = new Date(ts.seconds * 1000);
+  else if (ts instanceof Date) d = ts;
+  else d = new Date(ts);
+  if (isNaN(d)) return String(ts);
+  return d.toLocaleString('es-MX', {
+    day: '2-digit', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+}
+
+async function buscar() {
+  const rawInput = document.getElementById('orderInput').value.trim();
+  if (!rawInput) return;
+  const orderId = rawInput.toUpperCase();
+
+  setState('stateLoading');
+  document.getElementById('btnBuscar').disabled = true;
+
+  try {
+    // Try querying by id field first, then by document ID
+    const ticketsRef = collection(db, 'tickets');
+
+    // Try multiple query strategies
+    let snap = null;
+    let ticketData = null;
+
+    // Strategy 1: query where id field matches
+    try {
+      const q1 = query(ticketsRef, where('id', '==', orderId), limit(1));
+      snap = await getDocs(q1);
+      if (!snap.empty) ticketData = snap.docs[0].data();
+    } catch(e) { /* try next */ }
+
+    // Strategy 2: query where id field matches lowercase
+    if (!ticketData) {
+      try {
+        const q2 = query(ticketsRef, where('id', '==', rawInput), limit(1));
+        snap = await getDocs(q2);
+        if (!snap.empty) ticketData = snap.docs[0].data();
+      } catch(e) { /* try next */ }
+    }
+
+    // Strategy 3: document ID directly
+    if (!ticketData) {
+      try {
+        const docRef = doc(db, 'tickets', orderId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) ticketData = docSnap.data();
+      } catch(e) { /* not found */ }
+    }
+
+    if (!ticketData) {
+      setState('stateNotFound');
+      return;
+    }
+
+    renderResult(ticketData);
+
+  } catch (err) {
+    console.error(err);
+    setState('stateError');
+  } finally {
+    document.getElementById('btnBuscar').disabled = false;
+  }
+}
+
+function renderResult(d) {
+  // Order ID
+  document.getElementById('resOrderId').textContent = d.id || '—';
+
+  // Status badge
+  const statusEl = document.getElementById('resStatus');
+  const status = d.status || d.estado || 'Pendiente';
+  const statusText = statusLabel(status);
+  statusEl.textContent = statusText;
+  statusEl.className = 'status-badge ' + statusClass(status);
+
+  // Device info (fields from real data model)
+  document.getElementById('resDevice').textContent = d.deviceType || d.equipo || d.dispositivo || '—';
+  document.getElementById('resBrand').textContent = [d.brand || d.marca, d.model || d.modelo].filter(Boolean).join(' · ') || '';
+
+  // Info fields
+  document.getElementById('resFechaRec').textContent = fmt(d.entryDate || d.fechaRecepcion || d.fecha || d.createdAt);
+  // Technician - look up by assignedTechId if name not stored directly
+  const techName = d.technicianName || d.tecnicoNombre || d.assignedTechName || d.tecnico || d.assignedTechId || '—';
+  document.getElementById('resTecnico').textContent = techName;
+  document.getElementById('resProblema').textContent = d.problemDescription || d.problema || d.descripcion || '—';
+
+  if (d.estimatedDate || d.fechaEntrega) {
+    document.getElementById('resFechaEnt').textContent = fmt(d.estimatedDate || d.fechaEntrega);
+    document.getElementById('rowFechaEnt').style.display = '';
+  }
+
+  // Timeline / historial — field is "logs" in real model
+  const historial = d.logs || d.historial || d.bitacora || d.log || [];
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+
+  if (Array.isArray(historial) && historial.length > 0) {
+    // Sort descending by date
+    const sorted = [...historial].sort((a, b) => {
+      const ta = a.fecha?.seconds || (a.date ? new Date(a.date).getTime()/1000 : 0);
+      const tb = b.fecha?.seconds || (b.date ? new Date(b.date).getTime()/1000 : 0);
+      return tb - ta;
+    });
+
+    sorted.forEach((entry, i) => {
+      const item = document.createElement('div');
+      item.className = 'timeline-item';
+
+      const dot = document.createElement('div');
+      dot.className = 'tl-dot' + (i > 0 ? ' old' : '');
+      item.appendChild(dot);
+
+      const action = document.createElement('div');
+      action.className = 'tl-action';
+      // "logs" uses "message" field; historial uses "accion"
+      action.textContent = entry.message || entry.accion || entry.action || entry.estado || entry.status || '—';
+      item.appendChild(action);
+
+      const meta = document.createElement('div');
+      meta.className = 'tl-meta';
+      const who = entry.userName || entry.usuario || entry.tecnico || entry.user || '';
+      const when = fmt(entry.date || entry.fecha || entry.timestamp);
+      meta.textContent = [who, when].filter(Boolean).join(' · ');
+      item.appendChild(meta);
+
+      if (entry.notas || entry.nota || entry.comentario || entry.notes) {
+        const notes = document.createElement('div');
+        notes.className = 'tl-notes';
+        notes.textContent = entry.notas || entry.nota || entry.comentario || entry.notes;
+        item.appendChild(notes);
+      }
+
+      timeline.appendChild(item);
+    });
+
+    document.getElementById('timelineSection').style.display = '';
+  } else {
+    document.getElementById('timelineSection').style.display = 'none';
+  }
+
+  document.getElementById('resultCard').classList.add('show');
+  setState(null);
+}
+
+// Make buscar global
+window.buscar = buscar;
+
+// Enter key support
+document.getElementById('orderInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') buscar();
+});
+</script>
+</body>
+</html>
