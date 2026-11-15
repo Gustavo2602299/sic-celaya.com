@@ -439,6 +439,7 @@ function sendQuote(){
     empresa:empresa||'—',
     telefono:tel||'—',
     reply_to:email,
+    email_cliente:email,
     notas:notas||'—',
     productos:itemsText,
     total:totalText,
@@ -447,10 +448,14 @@ function sendQuote(){
   const btn=document.getElementById('sendQuoteBtn');
   btn.disabled=true;btn.textContent='Enviando...';
   status.className='quot-status';status.textContent='';
-  emailjs.send('service_dxinh0h','template_073h9er',params,'KXkTE97y-69YNAvLX')
+  // Enviar a Sic Celaya y copia al cliente en paralelo
+  Promise.all([
+    emailjs.send('service_dxinh0h','template_073h9er',params,'KXkTE97y-69YNAvLX'),
+    emailjs.send('service_dxinh0h','template_l7xgrn4',params,'KXkTE97y-69YNAvLX')
+  ])
     .then(()=>{
       status.className='quot-status ok';
-      status.textContent='&#10003; Cotización enviada. Te contactaremos pronto.';
+      status.textContent='&#10003; Cotización enviada. Revisa tu correo y te contactaremos pronto.';
       btn.textContent='Enviado';
       cart=[];updateCartBadge();
     })
