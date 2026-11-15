@@ -1,0 +1,497 @@
+<title>Catálogo de Productos — Sic Celaya</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap">
+<style>
+:root{--bg:#F5F7F5;--surface:#fff;--surface-2:#EBF2ED;--border:#D3E0D7;--fg:#0F1A13;--fg-2:#3A4F3F;--fg-3:#7A9080;--green:#1B5E42;--green-dark:#124030;--green-light:#E4F0EB;--orange:#F97316;--shadow-sm:0 1px 3px rgba(15,26,19,.07);--shadow-lg:0 12px 40px rgba(15,26,19,.13);--radius-lg:18px;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A120D;--surface:#111A14;--surface-2:#182210;--border:#243020;--fg:#E2EDE5;--fg-2:#8AA890;--fg-3:#4D6652;--green:#3DB87A;--green-dark:#2DA068;--green-light:#0D2718;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A120D;--surface:#111A14;--surface-2:#182210;--border:#243020;--fg:#E2EDE5;--fg-2:#8AA890;--fg-3:#4D6652;--green:#3DB87A;--green-dark:#2DA068;--green-light:#0D2718;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.6;background:var(--bg);color:var(--fg);padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:101}
+img{max-width:100%;display:block}
+.container{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.nav-inner{display:flex;align-items:center;height:62px;gap:12px}
+.nav-logo{height:28px;width:auto}
+.nav-back{margin-left:auto;padding:8px 16px;background:var(--green-light);color:var(--green);border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;white-space:nowrap}
+.nav-back:hover{background:var(--green);color:#fff}
+.hero{background:var(--green);padding:36px 0 32px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(255,255,255,.07) 0%,transparent 70%);pointer-events:none}
+.hero-inner{position:relative;z-index:1}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px}
+.hero-title{font-family:'Sora',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:8px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.75);max-width:500px}
+.hero-count{font-family:'Sora',sans-serif;font-size:28px;font-weight:800;color:#F97316}
+.toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:62px;z-index:90}
+.toolbar-inner{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:200px}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--fg-3);pointer-events:none}
+#searchInput{width:100%;padding:9px 12px 9px 38px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--fg);font-size:14px;outline:none}
+#searchInput:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-light)}
+.filter-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.filter-scroll::-webkit-scrollbar{display:none}
+.chip{padding:7px 14px;border-radius:99px;font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--fg-2);transition:all .12s;white-space:nowrap;flex-shrink:0}
+.chip:hover{border-color:var(--green);color:var(--green)}
+.chip.active{background:var(--green);color:#fff;border-color:var(--green)}
+.sort-select{padding:8px 12px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--fg);font-size:13px;cursor:pointer;outline:none;flex-shrink:0}
+.catalog-layout{padding:20px 0 48px}
+.results-info{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.results-count{font-size:13px;color:var(--fg-3)}
+.loading-bar{font-size:13px;color:var(--green);font-weight:600}
+.pagination{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.page-btn{padding:6px 11px;border:1px solid var(--border);border-radius:7px;background:var(--surface);color:var(--fg-2);font-size:13px;cursor:pointer;font-weight:500;min-width:34px}
+.page-btn:hover:not(:disabled){border-color:var(--green);color:var(--green)}
+.page-btn:disabled{opacity:.4;cursor:default}
+.page-btn.active{background:var(--green);color:#fff;border-color:var(--green)}
+.page-info{font-size:13px;color:var(--fg-3);padding:0 2px}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.product-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow .18s,transform .18s,border-color .18s;cursor:pointer}
+.product-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:var(--green)}
+.card-img-wrap{width:100%;aspect-ratio:1;background:var(--surface);position:relative;overflow:hidden}
+.card-img{width:100%;height:100%;object-fit:contain;padding:14px}
+.card-no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--surface-2)}
+.card-body{padding:12px 14px 14px}
+.card-brand{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.card-brand-logo{height:14px;width:auto;object-fit:contain;opacity:.8}
+.card-brand-name{font-size:11px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.04em}
+.card-title{font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;color:var(--fg);line-height:1.35;margin-bottom:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-sku{font-size:11px;color:var(--fg-3);margin-bottom:7px;font-family:monospace}
+.card-price{font-family:'Sora',sans-serif;font-size:18px;font-weight:800;color:var(--green)}
+.card-price-label{font-size:10px;color:var(--fg-3);font-weight:400;display:block;margin-top:1px}
+.card-stock{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;margin-top:7px;background:var(--green-light);color:var(--green)}
+.card-cta{width:100%;margin-top:10px;padding:8px;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:'Sora',sans-serif;font-weight:700;font-size:12px;cursor:pointer}
+.card-cta:hover{background:var(--green-dark)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border-radius:var(--radius-lg);max-width:700px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:scale(.96);transition:transform .2s}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-cat{font-size:12px;font-weight:700;color:var(--fg-3);text-transform:uppercase;letter-spacing:.06em}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--fg-3);padding:4px 8px;border-radius:6px;font-size:18px}
+.modal-close:hover{color:var(--fg);background:var(--surface-2)}
+.modal-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.modal-img{aspect-ratio:1;object-fit:contain;width:100%;border-radius:12px;background:var(--surface-2);padding:16px}
+.modal-brand{font-size:12px;font-weight:700;color:var(--fg-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.modal-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:700;color:var(--fg);line-height:1.3;margin-bottom:14px}
+.modal-price{font-family:'Sora',sans-serif;font-size:30px;font-weight:800;color:var(--green)}
+.modal-price-note{font-size:11px;color:var(--fg-3);margin-bottom:16px}
+.modal-specs{border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.spec-row{display:flex;padding:7px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.spec-row:last-child{border-bottom:none}
+.spec-label{color:var(--fg-3);width:90px;flex-shrink:0;font-weight:500}
+.spec-val{color:var(--fg)}
+.modal-feats{margin-top:14px}
+.modal-feats h4{font-family:'Sora',sans-serif;font-size:11px;font-weight:700;color:var(--fg);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}
+.feat-item{display:flex;gap:8px;font-size:13px;color:var(--fg-2);margin-bottom:5px;line-height:1.4}
+.feat-item::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0}
+.modal-cta{padding:0 20px 20px;display:flex;gap:10px;flex-wrap:wrap}
+.btn-green{padding:11px 20px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;flex:1}
+.btn-green:hover{background:var(--green-dark)}
+.btn-wa{padding:11px 18px;background:#25D366;color:#fff;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:7px;text-decoration:none}
+.btn-wa:hover{opacity:.9}
+.empty{text-align:center;padding:64px 20px;color:var(--fg-3)}
+.empty-icon{font-size:48px;margin-bottom:12px}
+@media(max-width:700px){.modal-body{grid-template-columns:1fr}.products-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}}
+@media(max-width:420px){.products-grid{grid-template-columns:1fr 1fr}}
+/* ── Carrito ── */
+.cart-fab{position:fixed;bottom:24px;right:24px;z-index:900;background:var(--green);color:#fff;border:none;border-radius:50px;padding:13px 20px;font-family:'Sora',sans-serif;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;align-items:center;gap:8px;transition:transform .15s}
+.cart-fab:hover{transform:scale(1.05)}
+.cart-badge{background:#F97316;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;align-items:center;justify-content:center}
+.cart-overlay.open{display:flex}
+.cart-panel{background:var(--surface);border-radius:16px;width:min(600px,96vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.cart-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.cart-header h2{font-size:18px;font-weight:700;color:var(--fg)}
+.cart-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--fg-2);line-height:1}
+.cart-items{flex:1;overflow-y:auto;padding:12px 20px}
+.cart-item{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--border)}
+.cart-item-img{width:52px;height:52px;object-fit:contain;border-radius:8px;background:var(--surface-2)}
+.cart-item-name{font-size:13px;font-weight:600;color:var(--fg);line-height:1.3}
+.cart-item-brand{font-size:12px;color:var(--fg-3);margin-top:2px}
+.cart-item-price{font-size:13px;font-weight:700;color:var(--green);white-space:nowrap;text-align:right}
+.cart-item-controls{display:flex;align-items:center;gap:6px;margin-top:6px}
+.qty-btn{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--surface-2);cursor:pointer;font-size:14px;font-weight:700;color:var(--fg);display:flex;align-items:center;justify-content:center;line-height:1}
+.qty-val{font-size:13px;font-weight:600;min-width:20px;text-align:center;color:var(--fg)}
+.cart-remove{background:none;border:none;cursor:pointer;color:var(--fg-3);font-size:18px;padding:0 4px;line-height:1}
+.cart-remove:hover{color:#ef4444}
+.cart-footer{padding:16px 20px;border-top:1px solid var(--border)}
+.cart-total{font-size:16px;font-weight:700;color:var(--fg);margin-bottom:12px;text-align:right}
+.cart-empty-msg{text-align:center;padding:32px;color:var(--fg-3);font-size:14px}
+.quot-form{padding:0 20px 20px;display:flex;flex-direction:column;gap:10px}
+.quot-form h3{font-size:15px;font-weight:700;color:var(--fg);margin-bottom:2px}
+.quot-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quot-field{display:flex;flex-direction:column;gap:4px}
+.quot-field label{font-size:12px;font-weight:600;color:var(--fg-2);text-transform:uppercase;letter-spacing:.04em}
+.quot-field input,.quot-field textarea{padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--fg);font-family:'Sora',sans-serif;font-size:13px}
+.quot-field input:focus,.quot-field textarea:focus{outline:2px solid var(--green);border-color:transparent}
+.quot-field textarea{resize:vertical;min-height:60px}
+.quot-actions{display:flex;gap:10px;margin-top:4px}
+.btn-quot{flex:1;padding:12px;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+.btn-quot-send{background:var(--green);color:#fff}
+.btn-quot-send:hover{background:var(--green-dark)}
+.btn-quot-cancel{background:var(--surface-2);color:var(--fg)}
+.quot-status{text-align:center;font-size:13px;padding:8px;border-radius:8px;display:none}
+.quot-status.ok{background:#d1fae5;color:#065f46;display:block}
+.quot-status.err{background:#fee2e2;color:#991b1b;display:block}
+.btn-cart{padding:11px 18px;background:#F97316;color:#fff;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+.btn-cart:hover{background:#ea6a0a}
+@media(max-width:500px){.quot-row{grid-template-columns:1fr}}
+</style>
+
+<nav class="nav"><div class="container nav-inner">
+  <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none"><img class="nav-logo" src="logo-sic.png" alt="Sic Celaya"></a>
+  <a href="/" class="nav-back">← Inicio</a>
+</div></nav>
+
+<div class="hero"><div class="container hero-inner">
+  <div class="hero-eyebrow">Catálogo de Productos</div>
+  <h1 class="hero-title">Encuentra el equipo que necesitas</h1>
+  <p class="hero-sub"><span class="hero-count" id="heroCount">17,971</span> productos disponibles con existencia · Precios sin IVA</p>
+</div></div>
+
+<div class="toolbar"><div class="container toolbar-inner">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input id="searchInput" type="search" placeholder="Buscar producto, marca o modelo...">
+  </div>
+  <div class="filter-scroll" id="filterChips">
+    <button class="chip active" data-cat="" data-file="">Todas</button>
+    <button class="chip" data-cat="Redes e IT" data-file="cat-redes.json">Redes e IT</button>
+    <button class="chip" data-cat="Videovigilancia" data-file="cat-video.json">Videovigilancia</button>
+    <button class="chip" data-cat="Cableado Estructurado" data-file="cat-cableado.json">Cableado</button>
+    <button class="chip" data-cat="Control de Acceso" data-file="cat-acceso.json">Control de Acceso</button>
+    <button class="chip" data-cat="Radiocomunicación" data-file="cat-radio.json">Radiocomunicación</button>
+    <button class="chip" data-cat="Energía y Climatización" data-file="cat-energia.json">Energía y UPS</button>
+    <button class="chip" data-cat="Automatización e Intrusión" data-file="cat-automatizacion.json">Automatización</button>
+    <button class="chip" data-cat="Audio y Video Profesional" data-file="cat-audio.json">Audio y Video</button>
+    <button class="chip" data-cat="GPS y Telemática" data-file="cat-gps.json">GPS</button>
+    <button class="chip" data-cat="Detección de Fuego" data-file="cat-fuego.json">Det. de Fuego</button>
+  </div>
+  <select class="sort-select" id="sortSelect">
+    <option value="default">Ordenar</option>
+    <option value="price-asc">Precio: menor a mayor</option>
+    <option value="price-desc">Precio: mayor a menor</option>
+    <option value="name">Nombre A-Z</option>
+  </select>
+</div></div>
+
+<div class="container catalog-layout">
+  <div class="results-info">
+    <div class="results-count" id="resultsCount"></div>
+    <div class="loading-bar" id="loadingBar"></div>
+    <div class="pagination" id="paginationTop"></div>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+  <div class="empty" id="emptyState" hidden><div class="empty-icon">🔍</div><div>No encontramos productos.<br>Intenta con otra búsqueda o categoría.</div></div>
+  <div class="pagination" id="paginationBottom" style="margin-top:24px;justify-content:center"></div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-cat" id="modalCat"></span><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-cta" id="modalCta"></div>
+  </div>
+</div>
+<script>
+const P={ID:0,SKU:1,N:2,M:3,ML:4,IM:5,PR:6,PL:7,C:8,E:9,G:10,K:11};
+const PER=60;
+// Datos iniciales (60 por categoría) — carga instantánea
+let ALL=[["220309","WD11PURZ","Disco Duro para Videovigilancia / 1 TB / SATA III 6 Gb/s / 5400 RPM / 64 MB Caché / 3.5 Pulgadas / 64 Cámaras / 8 Bahías / 0°C a 65°C (32°F a 149°F)","Western Digital (WD)","https://ftp3.syscom.mx/usuarios/fotos/logotipos/western_digital_(wd).png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/220309/portada_0S400.PNG",214.11,312.5,"Redes e IT",500,"3 años",["Operación continua 24/7 con consumo de solo 3.3W en lectura/escritura","Soporte para hasta 64 cámaras y 8 bahías en sistemas escalables","Búfer de 64 MB que optimiza flujo de video sin interrupciones","Transferencia sostenida de 110 MB/s para grabación multipista","Consumo en suspensión de 0.4W que reduce costos operativos eléctricos"]],["218714","WD23PURZ","Disco Duro para Videovigilancia / 2 TB / SATA III 6 Gb/s / 256 MB Caché / 3.5 Pulgadas / 64 Cámaras / 5400 RPM","Western Digital (WD)","https://ftp3.syscom.mx/usuarios/fotos/logotipos/western_digital_(wd).png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE-V2/218714/portada_0S400.PNG",237.95,347.31,"Redes e IT",500,"3 años",["Soporta hasta 64 cámaras en resolución HD simultánea","Caché de 256 MB para escritura eficiente de múltiples flujos de video","Consumo de 3.3W en operación para reducir costos térmicos y eléctricos","Operación continua en bahías de 1 a 8 discos sin degradación de rendimiento","Tasa sostenida de transferencia de 175 MB/s para grabación sin pérdida de cuadros"]],["219367","WD43PURZ","Disco Duro para Videovigilancia / 4 TB / SATA III 6 Gb/s / 256 MB Caché / 5400 RPM / 64 Cámaras / 3.5 Pulgadas","Western Digital (WD)","https://ftp3.syscom.mx/usuarios/fotos/logotipos/western_digital_(wd).png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/219367/portada_0S400.PNG",282.63,412.5,"Redes e IT",0,"3 años",["Operación continua 24/7 con bajo consumo de 3.3W en lectura/escritura","Soporte escalable de 1 a 64 cámaras simultáneas","Búfer de 256 MB para transmisión de video sin interrupciones","Tasa sostenida de transferencia de 150 MB/s host a disco","Compatibilidad con arreglos de 1 a 8 bahías"]],["220198","PST-1010-ER","Caja de Derivación IP55 / 7 Glándulas de Goma Recortables / 100 x 100 x 54 mm / Protección EMI y Antiestática","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/220198/portada_0S400.PNG",3.49,5.66,"Redes e IT",500,"3 años",["Adaptación flexible de entradas con glándulas recortables","Sellado IP55 para exteriores e interiores exigentes","Protección electromagnética y antiestática para equipos sensibles","Rango térmico extendido de -40 °C a 120 °C","Tornillería incluida para instalación rápida sin componentes adicionales"]],["95410","LBE-5AC-GEN2","CPE Punto a Punto / 5 GHz AC / 450 Mbps / Antena 23 dBi / PoE 24V / -40 a 70 °C","UBIQUITI","https://ftp3.syscom.mx/usuarios/fotos/logotipos/ubiquiti.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/95410/portada_0S400.PNG",91.95,144.81,"Redes e IT",500,"3 años",["Radio de gestión Wi-Fi en 2.4 GHz integrado","Anchos de canal flexibles hasta 80 MHz en PtP","Procesador MIPS de alto rendimiento","Inmunidad al ruido y SNR mejorados","Montaje en poste o mástil con protección anti-ESD"]],["229641","WD8002PURP","Disco duro de 8TB / 7200 RPM / SATA III 6Gb/s / 256MB caché / 245MB/s / 3.5 pulgadas / 0.086 x 0.482 x 0.333 pies","Western Digital (WD)","https://ftp3.syscom.mx/usuarios/fotos/logotipos/western_digital_(wd).png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/WESTERNDIGITAL(WD)/WD8002PURP/WD8002PURP-p.PNG",582.38,850.0,"Redes e IT",200,"5 años",["Soporta hasta 64 cámaras HD simultáneas","Transferencia sostenida de 245 MB/s","Bajo consumo de 8.6W en operación","Caché de 256 MB para alto rendimiento","Operación estable de 0°C a 65°C"]],["220309","WD11PURZ","Disco Duro para Videovigilancia / 1 TB / SATA III 6 Gb/s / 5400 RPM / 64 MB Caché / 3.5 Pulgadas / 64 Cámaras / 8 Bahías / 0°C a 65°C (32°F a 149°F)","Western Digital (WD)","https://ftp3.syscom.mx/usuarios/fotos/logotipos/western_digital_(wd).png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/220309/portada_0S400.PNG",214.11,312.5,"Videovigilancia",500,"3 años",["Operación continua 24/7 con consumo de solo 3.3W en lectura/escritura","Soporte para hasta 64 cámaras y 8 bahías en sistemas escalables","Búfer de 64 MB que optimiza flujo de video sin interrupciones","Transferencia sostenida de 110 MB/s para grabación multipista","Consumo en suspensión de 0.4W que reduce costos operativos eléctricos"]],["218714","WD23PURZ","Disco Duro para Videovigilancia / 2 TB / SATA III 6 Gb/s / 256 MB Caché / 3.5 Pulgadas / 64 Cámaras / 5400 RPM","Western Digital (WD)","https://ftp3.syscom.mx/usuarios/fotos/logotipos/western_digital_(wd).png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE-V2/218714/portada_0S400.PNG",237.95,347.31,"Videovigilancia",500,"3 años",["Soporta hasta 64 cámaras en resolución HD simultánea","Caché de 256 MB para escritura eficiente de múltiples flujos de video","Consumo de 3.3W en operación para reducir costos térmicos y eléctricos","Operación continua en bahías de 1 a 8 discos sin degradación de rendimiento","Tasa sostenida de transferencia de 175 MB/s para grabación sin pérdida de cuadros"]],["75489","TT-101-F-TURBO","Kit de Transceptores Pasivos (Baluns) / Transmisión 4K / Distancia 250 m (820.2 ft) / Protección TVS / Inmunidad 60 dB / Conectores Cobre / HD-TVI CVI AHD CVBS","EPCOM TITANIUM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/epcom_titanium.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/75489/portada_0S400.PNG",2.71,10.15,"Videovigilancia",500,"3 años",["Transmisión HD en tiempo real por par trenzado sin alimentación externa","Conectores 100% cobre para menor atenuación en altas frecuencias","Protección TVS integrada contra sobretensiones y rayos grado 3","Inmunidad al ruido y diafonía de 60 dB para señal limpia","Compatibilidad multiformato HD-TVI/CVI/AHD/CVBS sin configuración"]],["219367","WD43PURZ","Disco Duro para Videovigilancia / 4 TB / SATA III 6 Gb/s / 256 MB Caché / 5400 RPM / 64 Cámaras / 3.5 Pulgadas","Western Digital (WD)","https://ftp3.syscom.mx/usuarios/fotos/logotipos/western_digital_(wd).png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/219367/portada_0S400.PNG",282.63,412.5,"Videovigilancia",0,"3 años",["Operación continua 24/7 con bajo consumo de 3.3W en lectura/escritura","Soporte escalable de 1 a 64 cámaras simultáneas","Búfer de 256 MB para transmisión de video sin interrupciones","Tasa sostenida de transferencia de 150 MB/s host a disco","Compatibilidad con arreglos de 1 a 8 bahías"]],["240392","CSH8C/3MP","Cámara PT IP / 3 Megapixel (2K) / Visión Nocturna Color / Audio Bidireccional / Defensa Activa / IP65 / Wi-Fi y Ethernet RJ45","EZVIZ","https://ftp3.syscom.mx/usuarios/fotos/logotipos/ezviz.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/240392/portada_0S400.PNG",38.1,75.0,"Videovigilancia",500,"3 años",["Seguimiento automático con zoom para monitoreo inteligente","Detección de humanos con IA que minimiza falsas alarmas","Gestión centralizada desde aplicación móvil y comandos de voz","Integración con Google Assistant para control sin intervención manual","Identificación precisa de rostros en condiciones de poca luz"]],["225961","LK712","Batería de Respaldo AGM-VRLA / 12 V / 7 Ah / Vida Útil 5 Años / Terminales F1 + Adaptador F2 / Certificación UL","LINKEDPRO BY EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/linkedpro_by_epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/225961/portada_0S400.PNG",12.3,35.52,"Videovigilancia",200,"1 años",["Tecnología AGM-VRLA sin mantenimiento ni riesgo de derrames","Certificación UL para instalaciones de seguridad electrónica","Diseño compacto para gabinetes y racks de alta densidad","Terminal F1 con adaptador F2 para compatibilidad universal","Vida útil de diseño 5 años a temperatura ambiente estándar"]],["220198","PST-1010-ER","Caja de Derivación IP55 / 7 Glándulas de Goma Recortables / 100 x 100 x 54 mm / Protección EMI y Antiestática","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/220198/portada_0S400.PNG",3.49,5.66,"Cableado Estructurado",500,"3 años",["Adaptación flexible de entradas con glándulas recortables","Sellado IP55 para exteriores e interiores exigentes","Protección electromagnética y antiestática para equipos sensibles","Rango térmico extendido de -40 °C a 120 °C","Tornillería incluida para instalación rápida sin componentes adicionales"]],["166499","PRO-CAT-6-EXT-LITEW","Bobina de Cable UTP Cat6 para Exterior / 305 Metros (1000 Pies) / 23 AWG Cobre Sólido / Certificado UL / Sin Blindaje / 1 Gbps / PoE Extendido","LINKEDPRO BY EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/linkedpro_by_epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/166499/portada_0S400.PNG",219.44,358.79,"Cableado Estructurado",200,"5 años",["Conductor 100% cobre sólido 23 AWG para máxima conductividad","Certificación UL y ANSI/TIA-568-C.2 para instalaciones profesionales","Soporta PoE en distancias extendidas sin degradación de señal","Velocidad hasta 1 Gbps para redes Gigabit Ethernet","Aislamiento PVC diseñado para resistir condiciones exteriores"]],["236698","PSC-CAT5EXT","Cable UTP Cat5e / 4 Pares / 24 AWG / Cobre / Exterior UV / 305 m (1000 ft)","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/236698/portada_0S400.PNG",129.27,211.37,"Cableado Estructurado",200,"3 años",["Conductor 100% cobre para transmisión estable y baja atenuación","Aislamiento LDPE con protección UV para uso exterior prolongado","Soporta alimentación PoE en distancias extendidas hasta 305 m","Ancho de banda 100 MHz para voz, datos y video IP","Cordón de desgarro integrado que agiliza la instalación"]],["88889","PRO-CAT-5-EXT/500","Bobina de Cable / Cat5e / FTP Blindado / 152 m (499 ft) / Exterior UV / PoE / 100% Cobre","LINKEDPRO BY EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/linkedpro_by_epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/88889/portada_0S400.PNG",94.59,154.67,"Cableado Estructurado",200,"10 años",["Blindaje aluminizado contra interferencias eléctricas","Conductores 100% cobre para máxima eficiencia","Compatible con CCTV IP megapixel y video análogo","Envío PoE a largas distancias sin degradación","Resistencia UV para instalaciones en intemperie"]],["217577","EP-CAT-5E-V2-EXT","Bobina de Cable UTP / Cat5e / 305 m (1000 ft) / CCA 24 AWG / Doble Forro Intemperie / 100 MHz","LINKEDPRO BY EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/linkedpro_by_epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/217577/portada_0S400.PNG",71.32,121.8,"Cableado Estructurado",200,"3 años",["Transmisión eficiente con conductor CCA de cobre revestido en aluminio","Doble aislamiento PVC/LDPE para protección en ambientes externos","Diseño UTP sin blindaje facilita instalaciones versátiles y rápidas","Frecuencia de 100 MHz soporta redes de datos y video IP megapixel","Certificación CMX ANSI/TIA para cumplimiento normativo en intemperie"]],["239334","PRO-CAT-6-EXT-LITE-DJ","Cable UTP / Cat6 / 305 m (1000 ft) / Doble Forro Exterior / 24 AWG Cobre Sólido / 250 MHz / Gigabit Ethernet","LINKEDPRO BY EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/linkedpro_by_epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/239334/portada_0S400.PNG",199.2,295.26,"Cableado Estructurado",200,"1 años",["Protección extrema contra elementos sin sacrificar manejabilidad","Inmunidad a radiación UV y condiciones climáticas severas","Cobre puro para enlaces estables hasta 100 m (328 ft)","Rendimiento certificado para aplicaciones de alta velocidad","Compatible con envío de PoE en largas distancias"]],["220996","DS-K1T342MFWX-E1","Terminal de Control de Acceso / Reconocimiento Facial 2 MP / Lector MIFARE 13.56 MHz / Pantalla Táctil 4.3\" / PoE y Wi-Fi / IP65 / 1,500 Rostros / 3,000 Huellas / SIP","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/220996/portada_0S400.PNG",198.38,274.03,"Control de Acceso",500,"5 años",["Reconocimiento facial con deep learning y cámara dual de 2 MP","Lector MIFARE 13.56 MHz con cifrado y autenticación mutua anticlón","Pantalla táctil 4.3\" con protocolos ISAPI e ISUP 5.0 integrados","Gestión centralizada en la nube mediante Hik-Connect Teams SaaS","Alimentación PoE 802.3at y conectividad Wi-Fi para despliegues flexibles"]],["151481","MAG600NLED","Chapa Magnética Electromagnética / 280 kg (600 lbs) / 12/24 VCC / LED Ultra-brillante / Sensor NO/NC / Aluminio Anodizado","ACCESSPRO","https://ftp3.syscom.mx/usuarios/fotos/logotipos/accesspro.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/151481/portada_0S400.PNG",35.87,52.58,"Control de Acceso",500,"",["Sensor de puerta NO/NC integrado para monitoreo de estado en tiempo real","LED ultra-brillante integrado para identificación visual inmediata del estado","Diseño libre de magnetismo residual para liberación instantánea sin retención","Voltaje seleccionable 12/24 VCC con tolerancia +10% por jumper","Construcción en aluminio anodizado y zinc para alta resistencia a la corrosión"]],["67486","PRO-12RF","Lector RFID UHF / Alcance Ajustable 3 - 12 m (9.8 - 39.4 ft) / Frecuencia 902-928 MHz FHSS / Antena Integrada 12 dBi / Salida Wiegand 26 Bits / TCP-IP / Control de Acceso Vehicular","ACCESSPRO","https://ftp3.syscom.mx/usuarios/fotos/logotipos/accesspro.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/67486/portada_0S400.PNG",307.65,438.5,"Control de Acceso",200,"3 años",["Alcance lineal regulable de 3 a 12 m para adaptarse a distintos carriles vehiculares","Tecnología FHSS que minimiza interferencias en entornos con múltiples lectores","Salida Wiegand 26 bits compatible con controladores de acceso estándar","Potencia de transmisión programable de 0 a 30 dBm para ajuste fino de cobertura","Operación estable en temperaturas extremas de -20 a 80 °C"]],["198443","ACCESSTAGV2","Tag UHF Adherible / 860-960 MHz / EPC GEN2 / Wiegand 26 Bits / 2.82-3.15 GHz","ACCESSPRO","https://ftp3.syscom.mx/usuarios/fotos/logotipos/accesspro.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/198443/portada_0S400.PNG",2.11,2.71,"Control de Acceso",500,"3 años",["Lectura de largo alcance sin detener el vehículo","Antena de aluminio sobre etiqueta de papel adherible","Código de sitio y número interno preimpresos","Compatible con lectoras PRO12RF y PRO6RF","Ideal para estacionamientos y control de acceso vehicular"]],["163886","ACCESSK1","Botón de Salida Sin Contacto / Sensor IR 4 a 15 cm / Acero Inoxidable / Contactos NO/COM/NC / 12 VDC / IP para Ambientes Higiénicos","ACCESSPRO","https://ftp3.syscom.mx/usuarios/fotos/logotipos/accesspro.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/163886/portada_0S400.PNG",8.65,11.2,"Control de Acceso",500,"",["Activación por proximidad sin tocar superficie","Distancia de detección ajustable 4 a 15 cm","Contactos NO/COM/NC para cualquier control de acceso","Acero inoxidable resistente a desinfectantes y corrosión","Operación 12 VDC con bajo consumo energético"]],["237089","DS-K1T320MFWX-B/S","Terminal Biométrica / Reconocimiento Facial Deep Learning / 500 Rostros / 1,000 Huellas / Wi-Fi / Batería Respaldo 3 h / MIFARE / Detección Cubrebocas","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE-V2/237089/portada_0S400.PNG",88.68,131.7,"Control de Acceso",500,"5 años",["Reconoce rostros en 0.3 segundos sin contacto físico","Cámara 2 MP gran angular con detección de cubrebocas integrada","Batería 3,200 mAh con 3 horas de autonomía ante cortes de energía","Wi-Fi integrado y gestión remota mediante Hik-Connect Teams","Triple autenticación: facial, huella dactilar y tarjeta MIFARE"]],["154654","PST-2530-15A","Gabinete de Acero / IP66 / IK10 / 250 x 300 x 150 mm / Placa Trasera Galvanizada / Compuerta Inferior Atornillable / Chapa con Llave","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/154654/portada_0S400.PNG",36.82,57.15,"Radiocomunicación",500,"3 años",["Protección IP66 contra polvo y chorros de agua","Resistencia a impactos IK10 en ambientes exigentes","Placa trasera galvanizada de 1.5 mm para montaje","Soporta hasta 30 kg de equipo almacenado","Compuerta inferior atornillable para conectores glándula"]],["154656","PST-3040-20A","Gabinete IP66 / IK10 / 300 x 400 x 200 mm / Placa Montaje 250 x 365 mm / Carga 30 kg / Tapa Glándulas","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/PRECISIONVIDEO/PST304020A/PST304020A-p.PNG",45.98,75.87,"Radiocomunicación",200,"3 años",["Protección IP66 e IK10 para intemperie severa","Placa trasera galvanizada de 1.5 mm para montaje seguro","Carga útil hasta 30 kg en equipos de red y PoE","Tapa inferior atornillable para entrada de glándulas selladas","Cerradura con llave incluida para control de acceso físico"]],["154657","PST-4040-20A","Gabinete de Acero / IP66 NEMA 4 / IK10 / 400 x 400 x 200 mm / Placa Trasera Galvanizada / Chapa con Llave T","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/154657/portada_0S400.PNG",59.01,94.04,"Radiocomunicación",500,"3 años",["Protección IP66 y NEMA 4 contra polvo y lluvia","Resistencia a impactos IK10 en ambientes industriales exigentes","Placa trasera galvanizada de 1.5 mm para montaje de equipos","Soporta hasta 30 kg de equipos en su interior","Lámina de acero de 1.2 mm en cuerpo y puerta"]],["164837","PST-4060-25A","Gabinete de Acero / IP66 / IK10 / 400 x 600 x 250 mm / Placa Trasera Galvanizada / Uso en Intemperie","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/164837/portada_0S400.PNG",91.65,154.63,"Radiocomunicación",500,"3 años",["Protección IP66 contra polvo y chorros de agua potentes","Resistencia a impactos IK10 para entornos industriales exigentes","Placa trasera galvanizada de 2 mm para montaje de equipos","Soporta hasta 50 kg de almacenaje recomendado en su interior","Compuerta inferior atornillable para conectores tipo glándula"]],["80467","S-CH-19X1U","Charola para Rack / 19\" / 1U / 34 cm / 13.5 ft / Acero Calibre 18 / Carga 6 kg","LINKEDPRO BY EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/linkedpro_by_epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/80467/portada_0S400.PNG",27.28,39.59,"Radiocomunicación",500,"3 años",["Acabado negro para integración estética en centros de datos","Optimización de espacio con ocupación de una sola unidad de rack","Construcción en lámina de acero calibre 18 para durabilidad","Peso reducido de 1.71 kg para manejo e instalación sencillos","Profundidad de trabajo de 347 mm compatible con equipos compactos"]],["85447","TXG-01-571","Gabinete Plástico para Exterior / IP65 / 300 x 300 x 150 mm / ABS Resistente / Cierre por Tornillos / -20 a 60 °C","TXPRO","https://ftp3.syscom.mx/usuarios/fotos/logotipos/txpro.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/85447/portada_0S400.PNG",29.4,83.79,"Radiocomunicación",500,"3 años",["Protección IP65 con sello de silicona para intemperie total","ABS resistente que soporta -20 a 60 °C sin degradación","Perforaciones traseras para montaje rápido en pared, torre o poste","Compatible con membranas para salida organizada de cableado","Alberga PoE, protectores de picos y tablillas eléctricas"]],["225961","LK712","Batería de Respaldo AGM-VRLA / 12 V / 7 Ah / Vida Útil 5 Años / Terminales F1 + Adaptador F2 / Certificación UL","LINKEDPRO BY EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/linkedpro_by_epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/225961/portada_0S400.PNG",12.3,35.52,"Energía y Climatización",200,"1 años",["Tecnología AGM-VRLA sin mantenimiento ni riesgo de derrames","Certificación UL para instalaciones de seguridad electrónica","Diseño compacto para gabinetes y racks de alta densidad","Terminal F1 con adaptador F2 para compatibilidad universal","Vida útil de diseño 5 años a temperatura ambiente estándar"]],["220198","PST-1010-ER","Caja de Derivación IP55 / 7 Glándulas de Goma Recortables / 100 x 100 x 54 mm / Protección EMI y Antiestática","PRECISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/precision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/220198/portada_0S400.PNG",3.49,5.66,"Energía y Climatización",500,"3 años",["Adaptación flexible de entradas con glándulas recortables","Sellado IP55 para exteriores e interiores exigentes","Protección electromagnética y antiestática para equipos sensibles","Rango térmico extendido de -40 °C a 120 °C","Tornillería incluida para instalación rápida sin componentes adicionales"]],["243958","LR866HVD645M","Módulo Solar / 645 W Bifacial / 53.7 Vcc / Monocristalino HPBC 2.0 / 144 Celdas","LONGI","https://ftp3.syscom.mx/usuarios/fotos/logotipos/longi.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/243958/portada_0S400.PNG",154.78,255.84,"Energía y Climatización",1,"",["Eficiencia líder del 23.9% con tecnología HPBC 2.0","40 W adicionales de potencia vs módulos convencionales","Degradación ultra baja de 0.35% anual tras primer año","Resistencia mecánica 5400 Pa frontal y 2400 Pa posterior","Captación bifacial de luz trasera para mayor rendimiento"]],["237575","LR772HVH645M","Panel Solar Monocristalino / 645 W / 23.9% Eficiencia / HPBC 2.0 Back Contact / -0.26%/°C / 2.12 m (6.96 ft)","LONGI","https://ftp3.syscom.mx/usuarios/fotos/logotipos/longi.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/237575/portada_0S400.PNG",158.72,231.5,"Energía y Climatización",500,"",["Tecnología HPBC 2.0 sin barras frontales para máxima absorción lumínica","Degradación anual de solo 0.35% desde el año 2 hasta el 30","Wafers Tairay 16% más resistentes a la flexión mecánica","Coeficiente de temperatura -0.26%/°C ideal para climas cálidos","Tolerancia positiva 0~+5W asegura potencia real superior"]],["215182","DS-2FA1205-C8/K","Fuente de Poder Regulada / 8 Salidas / 1 Amp por Salida / Voltaje Ajustable 12/13.5/15 VCC / Entrada 90-130 VCA / Filtro de Ruido para 4K","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/215182/portada_0S400.PNG",34.26,49.37,"Energía y Climatización",500,"5 años",["Voltaje de salida ajustable en 3 niveles para compatibilidad con diversos equipos","Filtro de ruido integrado para señal limpia en cámaras 4K y dispositivos sensibles","8 salidas independientes de 1 Amp cada una para alimentación distribuida","Entrada 90-130 VCA con soporte 50/60 Hz para instalaciones con variabilidad de red","Diseño compacto de 130 x 94 x 34 mm para montaje en gabinetes reducidos"]],["61107","PS-12-DC-4C","Fuente de Poder CCTV / 4 Salidas / 11-15 Vcc Ajustable / 5 Amper Inteligente / Entrada 110-240 Vac / Fusible Térmico PTC 6A","EPCOM POWERLINE","https://ftp3.syscom.mx/usuarios/fotos/logotipos/epcom_powerline.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/61107/portada_0S400.PNG",10.83,19.25,"Energía y Climatización",500,"3 años",["Alimentación 12.5V optimizada para cámaras analógicas y TurboHD en larga distancia","Distribución inteligente de corriente hasta 3A por salida sin sobrecargar el sistema","Protección térmica PTC integrada de 6A para seguridad operativa continua","Voltaje de salida ajustable 11-15 Vcc para compatibilidad con diversos equipos","Diseño compacto 13 x 5 x 3 cm para instalación en espacios reducidos"]],["240392","CSH8C/3MP","Cámara PT IP / 3 Megapixel (2K) / Visión Nocturna Color / Audio Bidireccional / Defensa Activa / IP65 / Wi-Fi y Ethernet RJ45","EZVIZ","https://ftp3.syscom.mx/usuarios/fotos/logotipos/ezviz.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/240392/portada_0S400.PNG",38.1,75.0,"Automatización e Intrusión",500,"3 años",["Seguimiento automático con zoom para monitoreo inteligente","Detección de humanos con IA que minimiza falsas alarmas","Gestión centralizada desde aplicación móvil y comandos de voz","Integración con Google Assistant para control sin intervención manual","Identificación precisa de rostros en condiciones de poca luz"]],["215017","CS-H3C","Cámara Bala IP / 2 Megapixel / Wi-Fi 2.4 GHz / Lente 4 mm 82° / IP67 / Micro SD 512 GB / Audio Integrado","EZVIZ","https://ftp3.syscom.mx/usuarios/fotos/logotipos/ezviz.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/215017/portada_0S400.PNG",32.5,60.0,"Automatización e Intrusión",500,"3 años",["Detección humana inteligente para alertas precisas","DWDR y 3D-DNR para imagen clara en condiciones extremas","Compresión dual H.264/H.265 que reduce hasta 50% el almacenamiento","Integración con Alexa, Google Home e IFTTT para automatización","Grabación local hasta 512 GB sin dependencia de suscripción"]],["191682","DS-PWA48-E-WB","Panel de Alarma Inalámbrico / 48 Zonas / Wi-Fi 2.4 GHz y Ethernet / 12 h Batería de Respaldo / 433 MHz Bidireccional / 4 Sirenas Inalámbricas","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/191682/portada_0S400.PNG",117.9,182.0,"Automatización e Intrusión",200,"5 años",["Operación continua con batería de respaldo de 12 horas ante fallo eléctrico","Conectividad dual Wi-Fi y Ethernet para redundancia de comunicación","Comunicación bidireccional 433 MHz estable sin dependencia de red mesh","Expansión directa con hasta 2 repetidores para cobertura extendida","Integración de videoverificación IP para respaldo visual de eventos"]],["229471","CS-DL05-R200","Cerradura Inteligente / Wi-Fi y Bluetooth / Huella y Tag / IP65 / -25°C a 70°C / 8 Baterías AA","EZVIZ","https://ftp3.syscom.mx/usuarios/fotos/logotipos/ezviz.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/229471/portada_0S400.PNG",147.41,311.65,"Automatización e Intrusión",200,"3 años",["Memoria local para 50 huellas y 50 códigos sin dependencia de nube","3 códigos temporales programables para visitantes frecuentes","Desbloqueo de emergencia con llave mecánica y puerto USB-C","Operación extrema de -25°C a 70°C con sellado IP65","Lectura de tags de proximidad encriptados a 10 mm de distancia"]],["222694","CS-HP7","Videoportero IP / 2 Hilos / Monitor 7' Touchscreen / 2K 162° / Wi-Fi Dual 2.4/5 GHz / 2 Salidas de Apertura / IP65","EZVIZ","https://ftp3.syscom.mx/usuarios/fotos/logotipos/ezviz.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/222694/portada_0S400.PNG",175.91,260.0,"Automatización e Intrusión",200,"3 años",["Monitor interior 7' táctil con resolución 1024x600 para control visual directo","Visión panorámica 162° con detección humana inteligente y alertas de voz","Tres métodos de apertura: app, monitor táctil y tag de proximidad (2 incluidos)","Alimentación simplificada por 2 hilos con fuente 24 VCC incluida","Expansión con microSD hasta 512 GB para almacenamiento local de eventos"]],["237229","CS-H8C/5MP","Cámara PT IP / 5 Megapixel / 3K / 360° / IR 30 m (98.4 ft) / IP65","EZVIZ","https://ftp3.syscom.mx/usuarios/fotos/logotipos/ezviz.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/237229/portada_0S400.PNG",50.11,92.5,"Automatización e Intrusión",500,"1 años",["Detección de IA para humanos y vehículos con alertas instantáneas","Seguimiento automático con zoom para monitoreo de objetivos en movimiento","Defensa activa con sirena y luz estroboscópica disuasoria","Visión nocturna en color para identificación clara en total oscuridad","Compresión H.265 que optimiza ancho de banda y almacenamiento"]],["227188","EPC-ED970","Extensor HDMI / 4K 30 Hz a 40 m (131.2 ft) / 1080p a 70 m (229.7 ft) / Cat5e/Cat6 / PoC / HDMI Loop / IR Bidireccional","EPCOM PROAUDIO","https://ftp3.syscom.mx/usuarios/fotos/logotipos/epcom_proaudio.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/EPCOMPROAUDIO/EPCED970/EPCED970-p.PNG",53.66,74.44,"Audio y Video Profesional",200,"3 años",["Transmisión sin compresión ni latencia hasta 70 m","Salida HDMI Loop para conexión en cascada de múltiples extenders","Selección EDID local o remoto para compatibilidad optimizada","Audio multicanal hasta 7.1 con Dolby True HD y DTS HD","Alimentación PoC por cable de red, sin fuente adicional en receptor"]],["228485","TTHDMI2RJ","Extensor HDMI / 25 m (82 ft) / Cat5e/Cat6 / 1080p@60Hz / HDMI 1.3 / HDCP 1.2 / Sin Alimentación Externa","EPCOM TITANIUM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/epcom_titanium.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/228485/portada_0S400.PNG",11.99,15.36,"Audio y Video Profesional",500,"3 años",["Transmisión estable sin mosaico ni distorsión de color","Plug-and-play sin fuente de alimentación externa","Kit completo con unidad transmisora y receptora","Compatible con cables Cat5e o superior existentes","Resolución Full HD 1080p a 60 Hz con HDMI 1.3"]],["231443","DS-D5032F3-1V0S","Monitor LED 32\" Full HD / Operación 24-7 / HDMI y VGA / Altavoces 2 x 10W / Ángulo de Visión 178° / Montaje VESA 100 x 100","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/231443/portada_0S400.PNG",224.91,345.0,"Audio y Video Profesional",200,"5 años",["Operación continua 24/7 para centros de monitoreo y videovigilancia","Panel Full HD con ángulo de visión 178° sin distorsión de color","Altavoces integrados 2 x 10W para audio local sin periféricos adicionales","Entradas HDMI y VGA para compatibilidad con equipos nuevos y legados","Calibración inteligente de imagen para rendimiento estable a largo plazo"]],["229504","DS-D5022F2-1V2S","Monitor LED / 21.5\" Full HD / 1920 x 1080 / 100 Hz / HDMI-VGA / VESA 75 x 75 mm / Uso 24/7 / Bocinas Integradas / Ultra Delgado","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE-V2/229504/portada_0S400.PNG",109.65,153.87,"Audio y Video Profesional",200,"5 años",["Operación continua 24/7 para videovigilancia y entornos críticos","Bocinas integradas eliminan equipo periférico adicional","Diseño ultra delgado optimiza espacio en escritorios y racks","Cable HDMI 1.5 m incluido para despliegue inmediato","Consumo eficiente de 24 W reduce costo operativo eléctrico"]],["251565","R58XUQ-L1","Smart TV QLED / 58 Pulgadas / 4K UHD / Dolby Audio / Wi-Fi 2T2R / 3 HDMI / VESA 200x200 mm","HORION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/horion.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/HORION/R58XUQL1/portada_0S400.PNG?v=1786140521431",362.63,595.13,"Audio y Video Profesional",200,"1 años",["Panel QLED con 1.07 mil millones de colores y contraste 5000:1","Procesador Cortex-A55 quad-core a 1.89 GHz para operación fluida","Tres puertos HDMI con ARC y CEC para conectividad avanzada","Audio Dolby dual 8W + 8W con salida óptica SPDIF","Ángulo de visión 178° con retroiluminación DLED directa"]],["220759","P4-NB","Soporte de Pared Articulado / Pantallas 32\" a 55\" / VESA 100x100 a 400x400 mm / Carga 27.2 kg (60 lbs) / Extensión 5 a 40 cm / Giro 180° / Inclinación +8° a -5°","NB-EPCOM","https://ftp3.syscom.mx/usuarios/fotos/logotipos/nb-epcom.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/220759/portada_0S400.PNG",17.3,23.41,"Audio y Video Profesional",200,"5 años",["Extensión telescópica de 5 a 40 cm para ajuste de profundidad","Giro horizontal de 180° para ángulos de visión flexibles","Inclinación +8° a -5° para reducir reflejos y fatiga visual","Rotación fina de ±4° para nivelación post-instalación","Construcción en acero para soportar hasta 27.2 kg"]],["243750","AE-DC2032-V300(3CH)","Dashcam Vehicular / 3 Canales / 1080P FHD + 720P HD / GPS + 4G Integrado / WiFi / ADAS / G-Sensor / Micro SD 256 GB","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/243750/portada_0S400.PNG",136.53,199.28,"GPS y Telemática",200,"5 años",["Grabación triple simultánea frontal, interior y trasera sin puntos ciegos","Visión nocturna 3D DNR en cámara frontal con apertura F2.0","Rastreo en tiempo real por GPS y conectividad 4G integrados","Grabación automática ante impacto con sensor de colisión G-Sensor","Monitoreo remoto vía WiFi con aplicación HikDashCam"]],["240616","AE-DI5052-G40PRO","Dashcam Industrial 4G / 5 Canales / Frontal 1620P / ADAS / DSM / GPS / Wi-Fi / Bluetooth / Dual SIM / -30°C a 70°C","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/240616/portada_0S400.PNG",263.52,375.0,"GPS y Telemática",200,"5 años",["Grabación frontal 1620P con 5 canales simultáneos para cobertura total del vehículo","Conectividad 4G LTE Dual SIM con Wi-Fi, Bluetooth y GPS integrados para rastreo en tiempo real","ADAS y DSM integrados para detección proactiva de fatiga y conductas de riesgo del conductor","Audio bidireccional con micrófono y altavoz para comunicación directa con el operador","Almacenamiento dual microSD expandible hasta 2 TB para archivado prolongado de evidencia"]],["234860","AE-DC2328-C200S(2CH)","Dashcam Doble Lente / 2 Megapixel 1080p Frontal e Interior / Gran Angular 128° / WiFi / Pantalla IPS 3\" / H.265 / G-Sensor / Micro SD 256GB","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/234860/portada_0S400.PNG",89.62,117.73,"GPS y Telemática",200,"5 años",["Grabación dual sincronizada de cabina y carretera en un solo archivo","Apertura F2.0 para captura nítida en condiciones de baja iluminación","Pantalla IPS táctil de 3 pulgadas para revisión inmediata de eventos","WiFi integrado con app local para descarga directa sin datos móviles","G-Sensor con bloqueo automático de archivos ante impactos o frenados bruscos"]],["70020","PRORELAY","Módulo de Relé para Control de Acceso / Salida NO/NC/COM / 3A a 125 VCA / 12 VCC / -20°C a 70°C / Interbloqueo de Puertas","ACCESSPRO","https://ftp3.syscom.mx/usuarios/fotos/logotipos/accesspro.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/70020/portada_0S400.PNG",2.51,3.9,"GPS y Telemática",500,"3 años",["Operación versátil con salidas normalmente abierta, cerrada y común","Capacidad de conmutación hasta 3A/125VCA para cerraduras eléctricas","Indicador LED rojo para monitoreo visual del estado del relé","Rango térmico extendido de -20°C a 70°C para entornos exigentes","Sobrecarga máxima de 10A/250VAC y 10A/30VDC para protección robusta"]],["200221","AE-DC4328-K5","Cámara de Tablero / Grabación Dual 4 MP Frontal + 2 MP Trasera / Gran Angular 123° / Pantalla Táctil 3\" / Wi-Fi / G-Sensor / Operación -20°C a 70°C","HIKVISION","https://ftp3.syscom.mx/usuarios/fotos/logotipos/hikvision.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/200221/portada_0S400.PNG",120.49,185.3,"GPS y Telemática",200,"5 años",["Grabación dual simultánea sin interrupciones en ambos sentidos de marcha","Gran angular 123° que cubre carriles laterales para evidencia completa","Pantalla táctil de 3 pulgadas para revisión inmediata sin depender de dispositivos móviles","G-Sensor con bloqueo automático de archivos ante impactos o frenados bruscos","Wi-Fi directo con app Hik-DashCam para descarga y gestión remota de grabaciones"]],["222045","VL103","Rastreador GPS Vehicular 4G LTE / GPS+Beidou+LBS / Corte Remoto de Motor / SOS / BLE / IP66 / 9-90V","JIMIIOT","https://ftp3.syscom.mx/usuarios/fotos/logotipos/jimiiot.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/222045/portada_0S400.PNG",51.62,70.84,"GPS y Telemática",200,"3 años",["Posicionamiento híbrido GPS+Beidou+LBS con precisión de 2.5 m","Conmutación automática 4G LTE CAT1 a 2G para cobertura continua","Corte remoto de motor y botón de pánico SOS para respuesta de emergencia","Micrófono integrado para escucha ambiental remota en tiempo real","Soporte para sensores inalámbricos BLE para expansión de funcionalidades"]],["229215","P2RLEDSP","Sirena con Estroboscopio LED / 2 Hilos / Montaje en Pared / Candela Seleccionable 15-185 cd / Marcaj","SYSTEM SENSOR","https://ftp3.syscom.mx/usuarios/fotos/logotipos/system_sensor.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/229215/portada_0S400.PNG",89.15,73.07,"Detección de Fuego",500,"3 años",["Tecnología LED que reduce consumo de corriente vs xenón","Candela ajustable en campo de 15 a 185 cd para pared","Diseño enchufable con placa de montaje universal incluida"]],["203850","FSP-951","Detector de Humo Direccionable / Fotoeléctrico FlashScan / Sensibilidad 1.5% / SLC 2 Hilos / UL 268 ","NOTIFIER","https://ftp3.syscom.mx/usuarios/fotos/logotipos/notifier.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/203850/portada_0S400.PNG",132.13,108.3,"Detección de Fuego",500,"3 años",["Detección fotoeléctrica mejorada para incendios de combustión lenta o rápida","Direccionamiento decimal rotativo individual sin necesidad de herramientas","Prueba remota y de caminado desde el panel de control central"]],["169662","SD-365","Detector de Humo Direccionable / Fotoelectrónico / LED Dual 360° / Base 6\" (15.2 cm) / Protocolo Lit","FIRE-LITE","https://ftp3.syscom.mx/usuarios/fotos/logotipos/fire-lite.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/169662/portada_0S400.PNG",132.78,108.84,"Detección de Fuego",500,"3 años",["Dirección configurable con interruptores rotativos sin herramientas","Visibilidad de estado en 360° con indicadores LED duales","Diseño antimanipulación con tapa removible para mantenimiento en campo"]],["224866","P2RLED","Sirena con Estrobo LED / 2 Hilos / Candela Seleccionable hasta 185 cd / 24 Vcd / Montaje en Pared","SYSTEM SENSOR","https://ftp3.syscom.mx/usuarios/fotos/logotipos/system_sensor.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/224866/portada_0S400.PNG",97.11,79.6,"Detección de Fuego",500,"3 años",["LED de bajo consumo que reduce la carga eléctrica del lazo de notificación","Candela configurable en campo entre 15 y 185 cd según requerimiento normativo","Puntos de prueba DVM integrados para verificación de voltaje sin desmontar"]],["136202","4306-1104/1000","Cable para Sistemas de Detección de Incendio / 2x18 AWG / Riser FPLR-CL3R FT4 / 305 m (1000 ft) / Ro","GENESIS","https://ftp3.syscom.mx/usuarios/fotos/logotipos/genesis.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/AI/UPSCALE/136202/portada_0S400.PNG",311.66,255.46,"Detección de Fuego",200,"3 años",["Doble conductor sólido de cobre con aislamiento PVC codificado por colores","Forro rojo de PVC resistente para identificación y protección en instalaciones","Certificación UL 1666 y CSA C22.2 para aplicaciones riser y distribución vertical"]],["97717","BG12-LX-SP","Estación Manual de Incendio / Direccionable / Doble Acción / Texto en Español / Montaje Superficial ","FIRE-LITE","https://ftp3.syscom.mx/usuarios/fotos/logotipos/fire-lite.png","https://ftp3.syscom.mx/usuarios/fotos/BancoFotografiasSyscom/FIRE-LITE/BG12LXSP/BG12LXSP-p.PNG",151.78,124.41,"Detección de Fuego",200,"3 años",["Identificación exacta de ubicación en panel de control","Doble acción que minimiza activaciones accidentales","LED bicolor con indicación visual de estado normal y alarma"]]];
+let fil=[...ALL],cat='',catFile='',q='',srt='default',pg=1;
+let loaded=new Set(['']);// categorías ya cargadas ('' = todas iniciales)
+let TC=20;// tipo de cambio USD→MXN; se actualiza al cargar
+const fmt=n=>new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',currencyDisplay:'code'}).format(n*TC);
+fetch('https://open.er-api.com/v6/latest/USD')
+  .then(r=>r.json())
+  .then(d=>{if(d&&d.rates&&d.rates.MXN){TC=d.rates.MXN;render();}})
+  .catch(()=>{});
+
+function loadCat(file,catName,cb){
+  if(loaded.has(catName)){cb();return;}
+  document.getElementById('loadingBar').textContent='Cargando '+catName+'...';
+  fetch(file)
+    .then(r=>r.json())
+    .then(data=>{
+      // Reemplazar los productos de esta categoría con los completos
+      ALL=ALL.filter(p=>p[P.C]!==catName).concat(data);
+      loaded.add(catName);
+      document.getElementById('loadingBar').textContent='';
+      cb();
+    })
+    .catch(()=>{document.getElementById('loadingBar').textContent='';cb();});
+}
+
+function filter(){
+  if(catFile&&!loaded.has(cat)){
+    loadCat(catFile,cat,()=>filter());
+    return;
+  }
+  fil=ALL.filter(p=>{
+    const mc=!cat||p[P.C]===cat;
+    const qs=q.toLowerCase();
+    const ms=!qs||p[P.N].toLowerCase().includes(qs)||p[P.M].toLowerCase().includes(qs)||(p[P.SKU]||'').toLowerCase().includes(qs);
+    return mc&&ms;
+  });
+  if(srt==='price-asc')fil.sort((a,b)=>a[P.PR]-b[P.PR]);
+  else if(srt==='price-desc')fil.sort((a,b)=>b[P.PR]-a[P.PR]);
+  else if(srt==='name')fil.sort((a,b)=>a[P.N].localeCompare(b[P.N],'es'));
+  pg=1;render();
+}
+
+function render(){
+  const grid=document.getElementById('productsGrid');
+  const empty=document.getElementById('emptyState');
+  document.getElementById('resultsCount').textContent=fil.length.toLocaleString('es-MX')+' productos';
+  const tot=Math.ceil(fil.length/PER);
+  const start=(pg-1)*PER;
+  const page=fil.slice(start,start+PER);
+  renderPags(tot);
+  if(!fil.length){grid.innerHTML='';empty.hidden=false;return;}
+  empty.hidden=true;
+  grid.innerHTML=page.map((p,i)=>{
+    const gi=start+i;
+    return '<div class="product-card" onclick="openModal('+gi+')">'
+      +'<div class="card-img-wrap">'
+      +(p[P.IM]?'<img class="card-img" src="'+p[P.IM]+'" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">':'')
+      +'<div class="card-no-img" style="'+(p[P.IM]?'display:none':'')+'">&#128230;</div>'
+      +'</div><div class="card-body">'
+      +'<div class="card-brand">'
+      +(p[P.ML]?'<img class="card-brand-logo" src="'+p[P.ML]+'" alt="" onerror="this.style.display=\'none\'">':'')
+      +'<span class="card-brand-name">'+p[P.M]+'</span></div>'
+      +'<div class="card-title">'+p[P.N]+'</div>'
+      +(p[P.SKU]?'<div class="card-sku">'+p[P.SKU]+'</div>':'')
+      +'<div class="card-price">'+fmt(p[P.PR])+'<span class="card-price-label">Sin IVA</span></div>'
+      +'<div class="card-stock">&#10003; En existencia</div>'
+      +'<button class="card-cta">Ver detalle →</button>'
+      +'</div></div>';
+  }).join('');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderPags(tot){
+  const html=()=>{
+    if(tot<=1)return '';
+    let b='<button class="page-btn" onclick="goPage('+(pg-1)+')" '+(pg===1?'disabled':'')+'>‹</button>';
+    const r=[];
+    for(let i=1;i<=tot;i++){
+      if(i===1||i===tot||Math.abs(i-pg)<=2)r.push(i);
+      else if(r[r.length-1]!=='…')r.push('…');
+    }
+    r.forEach(x=>{
+      if(x==='…')b+='<span class="page-info">…</span>';
+      else b+='<button class="page-btn'+(x===pg?' active':'')+'" onclick="goPage('+x+')">'+x+'</button>';
+    });
+    b+='<button class="page-btn" onclick="goPage('+(pg+1)+')" '+(pg===tot?'disabled':'')+'>›</button>';
+    return b;
+  };
+  document.getElementById('paginationTop').innerHTML=html();
+  document.getElementById('paginationBottom').innerHTML=html();
+}
+
+function goPage(p){
+  const tot=Math.ceil(fil.length/PER);
+  if(p<1||p>tot)return;pg=p;render();
+}
+
+function openModal(gi){
+  const p=fil[gi];if(!p)return;
+  document.getElementById('modalCat').textContent=p[P.C];
+  const wa='https://wa.me/524613773477?text='+encodeURIComponent('Hola, me interesa cotizar:\n'+p[P.N]+(p[P.SKU]?' ('+p[P.SKU]+')':''));
+  document.getElementById('modalBody').innerHTML=
+    '<div>'
+    +(p[P.IM]?'<img class="modal-img" src="'+p[P.IM]+'" alt="" onerror="this.style.padding=\'40px\'">':
+      '<div class="modal-img" style="display:flex;align-items:center;justify-content:center;font-size:48px;background:var(--surface-2)">&#128230;</div>')
+    +'</div><div>'
+    +'<div class="modal-brand">'+p[P.M]+'</div>'
+    +'<div class="modal-title">'+p[P.N]+'</div>'
+    +'<div class="modal-price">'+fmt(p[P.PR])+'</div>'
+    +'<div class="modal-price-note">Precio sin IVA</div>'
+    +'<div class="modal-specs">'
+    +(p[P.SKU]?'<div class="spec-row"><span class="spec-label">Modelo</span><span class="spec-val">'+p[P.SKU]+'</span></div>':'')
+    +'<div class="spec-row"><span class="spec-label">Categoría</span><span class="spec-val">'+p[P.C]+'</span></div>'
+    +(p[P.G]?'<div class="spec-row"><span class="spec-label">Garantía</span><span class="spec-val">'+p[P.G]+'</span></div>':'')
+    +'<div class="spec-row"><span class="spec-label">Existencia</span><span class="spec-val">'+p[P.E]+' pzs</span></div>'
+    +'<div class="spec-row"><span class="spec-label">Precio lista</span><span class="spec-val">'+fmt(p[P.PL])+'</span></div>'
+    +'</div>'
+    +(p[P.K]&&p[P.K].length?'<div class="modal-feats"><h4>Características</h4>'+p[P.K].map(c=>'<div class="feat-item">'+c+'</div>').join('')+'</div>':'')
+    +'</div>';
+  // Guardar gi para addToCart desde modal
+  window._modalGi=gi;
+  document.getElementById('modalCta').innerHTML=
+    '<button class="btn-green" onclick="closeModal()">&#8592; Regresar</button>'
+    +'<button class="btn-cart" id="addCartBtn" onclick="addToCart(window._modalGi)">Agregar a cotización</button>'
+    +'<a class="btn-wa" href="'+wa+'" target="_blank">'
+    +'<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>'
+    +'WhatsApp</a>';
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.getElementById('searchInput').addEventListener('input',e=>{q=e.target.value;filter();});
+document.getElementById('filterChips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip');if(!c)return;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+  c.classList.add('active');cat=c.dataset.cat;catFile=c.dataset.file;filter();
+});
+document.getElementById('sortSelect').addEventListener('change',e=>{srt=e.target.value;filter();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeCart();}});
+filter();
+
+// ── CARRITO ──────────────────────────────────────────────────────────────
+let cart=[]; // [{id,sku,nombre,marca,imagen,precio,qty}]
+
+function cartTotal(){return cart.reduce((s,i)=>s+i.precio*i.qty,0);}
+function cartCount(){return cart.reduce((s,i)=>s+i.qty,0);}
+
+function addToCart(gi){
+  const p=fil[gi];if(!p)return;
+  const id=p[P.ID];
+  const ex=cart.find(x=>x.id===id);
+  if(ex){ex.qty++;}
+  else{cart.push({id,sku:p[P.SKU],nombre:p[P.N],marca:p[P.M],imagen:p[P.IM],precio:p[P.PR],qty:1});}
+  updateCartBadge();
+  // Feedback visual
+  const btn=document.getElementById('addCartBtn');
+  if(btn){btn.textContent='✓ Agregado';btn.style.background='#16a34a';setTimeout(()=>{btn.textContent='Agregar a cotización';btn.style.background='';},1500);}
+}
+
+function updateCartBadge(){
+  const n=cartCount();
+  const badge=document.getElementById('cartBadge');
+  const fab=document.getElementById('cartFab');
+  badge.textContent=n;
+  fab.style.display=n>0?'flex':'none';
+}
+
+function openCart(){document.getElementById('cartOverlay').classList.add('open');renderCart();}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('open');}
+
+function renderCart(){
+  const el=document.getElementById('cartItemsList');
+  const footer=document.getElementById('cartFooter');
+  if(!cart.length){
+    el.innerHTML='<div class="cart-empty-msg">&#128722; Tu carrito está vacío.<br>Agrega productos desde el catálogo.</div>';
+    footer.style.display='none';return;
+  }
+  footer.style.display='block';
+  el.innerHTML=cart.map((item,idx)=>`
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.imagen||''}" alt="" onerror="this.style.opacity='.3'">
+      <div>
+        <div class="cart-item-brand">${item.marca}</div>
+        <div class="cart-item-name">${item.nombre}</div>
+        ${item.sku?`<div class="cart-item-brand">${item.sku}</div>`:''}
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+          <button class="cart-remove" onclick="removeItem(${idx})" title="Eliminar">&#128465;</button>
+        </div>
+      </div>
+      <div class="cart-item-price">${fmt(item.precio*item.qty)}</div>
+    </div>`).join('');
+  document.getElementById('cartTotalLine').textContent='Total estimado: '+fmt(cartTotal())+' sin IVA';
+}
+
+function changeQty(idx,delta){
+  cart[idx].qty+=delta;
+  if(cart[idx].qty<=0)cart.splice(idx,1);
+  updateCartBadge();renderCart();
+}
+function removeItem(idx){cart.splice(idx,1);updateCartBadge();renderCart();}
+
+// ── ENVÍO DE COTIZACIÓN ───────────────────────────────────────────────────
+function sendQuote(){
+  const nombre=document.getElementById('qNombre').value.trim();
+  const empresa=document.getElementById('qEmpresa').value.trim();
+  const tel=document.getElementById('qTel').value.trim();
+  const email=document.getElementById('qEmail').value.trim();
+  const notas=document.getElementById('qNotas').value.trim();
+  const status=document.getElementById('quotStatus');
+  if(!nombre||!email||!cart.length){
+    status.className='quot-status err';
+    status.textContent='Por favor llena nombre, correo y agrega al menos un producto.';
+    return;
+  }
+  const itemsText=cart.map(i=>`• ${i.nombre} (${i.sku||'—'}) x${i.qty} = ${fmt(i.precio*i.qty)}`).join('\n');
+  const totalText=fmt(cartTotal())+' sin IVA';
+  const params={
+    to_name:'Equipo Sic Celaya',
+    from_name:nombre,
+    empresa:empresa||'—',
+    telefono:tel||'—',
+    reply_to:email,
+    notas:notas||'—',
+    productos:itemsText,
+    total:totalText,
+    tc:'TC aprox: '+TC.toFixed(2)+' MXN/USD'
+  };
+  const btn=document.getElementById('sendQuoteBtn');
+  btn.disabled=true;btn.textContent='Enviando...';
+  status.className='quot-status';status.textContent='';
+  emailjs.send('service_dxinh0h','template_073h9er',params,'KXkTE97y-69YNAvLX')
+    .then(()=>{
+      status.className='quot-status ok';
+      status.textContent='&#10003; Cotización enviada. Te contactaremos pronto.';
+      btn.textContent='Enviado';
+      cart=[];updateCartBadge();
+    })
+    .catch(err=>{
+      status.className='quot-status err';
+      status.textContent='Error al enviar. Intenta de nuevo o contáctanos por WhatsApp.';
+      btn.disabled=false;btn.textContent='Enviar cotización';
+      console.error(err);
+    });
+}
+</script>
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('KXkTE97y-69YNAvLX');</script>
+
+<!-- Botón flotante carrito -->
+<button class="cart-fab" id="cartFab" onclick="openCart()" style="display:none">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+  <span class="cart-label">Mi cotización</span>
+  <span class="cart-badge" id="cartBadge">0</span>
+</button>
+
+<!-- Panel carrito -->
+<div class="cart-overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>&#128722; Mi cotización</h2>
+      <button class="cart-close" onclick="closeCart()">&#10005;</button>
+    </div>
+    <div class="cart-items" id="cartItemsList"></div>
+    <div id="cartFooter" style="display:none">
+      <div class="cart-footer">
+        <div class="cart-total" id="cartTotalLine"></div>
+      </div>
+      <div class="quot-form">
+        <h3>Datos de contacto</h3>
+        <div class="quot-row">
+          <div class="quot-field"><label>Nombre *</label><input id="qNombre" type="text" placeholder="Tu nombre completo"></div>
+          <div class="quot-field"><label>Empresa</label><input id="qEmpresa" type="text" placeholder="Nombre de empresa"></div>
+        </div>
+        <div class="quot-row">
+          <div class="quot-field"><label>Teléfono</label><input id="qTel" type="tel" placeholder="Ej. 461 123 4567"></div>
+          <div class="quot-field"><label>Email *</label><input id="qEmail" type="email" placeholder="tu@correo.com"></div>
+        </div>
+        <div class="quot-field"><label>Notas adicionales</label><textarea id="qNotas" placeholder="Proyecto, cantidad, especificaciones..."></textarea></div>
+        <div id="quotStatus" class="quot-status"></div>
+        <div class="quot-actions">
+          <button class="btn-quot btn-quot-cancel" onclick="closeCart()">Cancelar</button>
+          <button class="btn-quot btn-quot-send" id="sendQuoteBtn" onclick="sendQuote()">Enviar cotización</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
