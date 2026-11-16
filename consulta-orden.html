@@ -383,16 +383,28 @@ async function buscar() {
       if (!snap.empty) ticketData = snap.docs[0].data();
     } catch(e) { /* try next */ }
 
-    // Strategy 2: id as-is (case preserved)
+    // Strategy 2: id as number (Firestore may store it as integer)
     if (!ticketData) {
       try {
-        const q2 = query(ticketsRef, where('id', '==', rawInput), limit(1));
-        const snap = await getDocs(q2);
+        const numId = Number(rawInput);
+        if (!isNaN(numId)) {
+          const q2 = query(ticketsRef, where('id', '==', numId), limit(1));
+          const snap = await getDocs(q2);
+          if (!snap.empty) ticketData = snap.docs[0].data();
+        }
+      } catch(e) { /* try next */ }
+    }
+
+    // Strategy 3: id as-is (case preserved)
+    if (!ticketData) {
+      try {
+        const q3 = query(ticketsRef, where('id', '==', rawInput), limit(1));
+        const snap = await getDocs(q3);
         if (!snap.empty) ticketData = snap.docs[0].data();
       } catch(e) { /* try next */ }
     }
 
-    // Strategy 3: document ID directly
+    // Strategy 4: document ID directly
     if (!ticketData) {
       try {
         const docRef = doc(db, 'tickets', orderId);
